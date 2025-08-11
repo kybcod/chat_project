@@ -15,12 +15,12 @@ public class ViewController {
 
     @GetMapping("/chatting")
     public String chatting() {
-        return "fragments/chatting :: content";
+        return "chat/chatting :: content";
     }
 
     @GetMapping("/chatbot")
     public String chatbot() {
-        return "fragments/chatbot :: content";
+        return "chat/chatbot :: content";
     }
 
 }

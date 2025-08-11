@@ -30,19 +30,20 @@
         }
 
     </style>
+
+    <th:block th:replace="~{fragments/scripts.html :: scripts}"></th:block>
 </head>
 <body>
 
-<div th:replace="header :: header"></div>
+<th:block th:replace="~{fragments/header.html :: header}"></th:block>
 <div class="container">
-    <div th:replace="sideNav :: sideNav"></div>
+    <th:block th:replace="~{fragments/sideNav.html :: sideNav}"></th:block>
     <main id="main-content">
         <p>메인</p>
     </main>
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function loadContent(url) {
         $.ajax({
