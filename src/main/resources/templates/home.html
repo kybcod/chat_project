@@ -2,35 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <style>
-        /* header 스타일 */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        /* 레이아웃 스타일 */
-        .container {
-            display: flex;
-            height: calc(100vh - 50px); /* 헤더 높이 제외 */
-        }
-
-        nav {
-            width: 150px;
-            border-right: 1px solid #ccc;
-            padding: 10px;
-        }
-
-        main {
-            flex: 1;
-            padding: 20px;
-        }
-
-    </style>
-
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <th:block th:replace="~{fragments/scripts.html :: scripts}"></th:block>
 </head>
 <body>
