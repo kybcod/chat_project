@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="sideNav">
+    <nav>
+        <div>메뉴 아이콘</div>
+        <a onclick="loadContent('/chatting')">채팅</a>
+        <a onclick="loadContent('/chatbot')">챗봇</a>
+    </nav>
+
+</div>
+</body>
+</html>

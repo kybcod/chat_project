@@ -12,5 +12,16 @@ public class ViewController {
     public String home() {
         return "home";
     }
+
+    @GetMapping("/chatting")
+    public String chatting() {
+        return "fragments/chatting :: content";
+    }
+
+    @GetMapping("/chatbot")
+    public String chatbot() {
+        return "fragments/chatbot :: content";
+    }
+
 }
 

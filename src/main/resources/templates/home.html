@@ -2,15 +2,60 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <style>
+        /* header 스타일 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* 레이아웃 스타일 */
+        .container {
+            display: flex;
+            height: calc(100vh - 50px); /* 헤더 높이 제외 */
+        }
+
+        nav {
+            width: 150px;
+            border-right: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+
+    </style>
 </head>
 <body>
-<h1>홈</h1>
-<ul>
-    <li><a href="/signup">회원가입</a></li>
-    <li><a href="/login">로그인</a></li>
-    <li><a href="/">채팅</a></li>
-    <li><a href="/">챗봇</a></li>
-</ul>
+
+<div th:replace="header :: header"></div>
+<div class="container">
+    <div th:replace="sideNav :: sideNav"></div>
+    <main id="main-content">
+        <p>메인</p>
+    </main>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadContent(url) {
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (html) {
+                $("#main-content").html(html);
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", status, error);
+            }
+        });
+    }
+</script>
 </body>
 </html>
