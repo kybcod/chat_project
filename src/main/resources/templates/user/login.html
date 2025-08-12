@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <th:block th:replace="~{fragments/scripts.html :: scripts}"></th:block>
+</head>
+<body>
+
+<div class="login-modal">
+    <h2>로그인</h2>
+
+    <a class="social-login-btn">
+        <img src="/images/naver.png" alt="네이버 로그인" />
+    </a>
+
+    <a class="social-login-btn">
+        <img src="/images/kakao.png" alt="카카오 로그인" />
+    </a>
+
+    <a class="social-login-btn">
+        <img src="/images/google.png" alt="구글 로그인" />
+    </a>
+
+</div>
+
+</body>
+</html>

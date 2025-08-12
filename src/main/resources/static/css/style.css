@@ -24,3 +24,43 @@ main {
     flex: 1;
     padding: 20px;
 }
+
+/* 로그인 */
+.login-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.login-modal h2 {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.social-login-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 15px;
+    padding: 0;
+    transition: transform 0.2s ease;
+
+}
+
+.social-login-btn:hover {
+    transform: scale(1.05);
+}
+
+.social-login-btn:active {
+    transform: scale(0.95);
+}
+
+.social-login-btn img {
+    width: 200px;
+    height: 50px;
+    object-fit: contain;
+    display: block;
+}
