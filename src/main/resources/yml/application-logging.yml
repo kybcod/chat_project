@@ -1,0 +1,9 @@
+logging:
+  level:
+    root: info
+    jdbc.sqlonly: info
+    jdbc.sqltiming: off
+    jdbc.audit: error
+    jdbc.resultset: off
+    jdbc.resultsettable: off
+    jdbc.connection: off
