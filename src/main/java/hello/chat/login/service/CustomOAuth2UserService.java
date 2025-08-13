@@ -32,6 +32,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // 소셜 유저 정보
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
+        log.info("OAuth2 attributes for provider {}: {}", registrationId, attributes);
+
         // Provider별 데이터 파싱
         String loginId;
         String email;
@@ -42,7 +44,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             loginId = (String) attributes.get("sub");
             email = (String) attributes.get("email");
             name = (String) attributes.get("name");
-            log.info("gogole, loginId={}, email={}, name={}", loginId, email, name);
         } else if ("kakao".equals(registrationId)) {
             Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
             Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
@@ -50,13 +51,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             email = (String) kakaoAccount.get("email");
             name = (String) profile.get("nickname");
             profileImage = (String) profile.get("profile_image_url");
-            log.info("kakao, kakaoAccount={}, profile={}, loginId={}, email={}, name={}", kakaoAccount, profile, loginId, email, name);
         } else if ("naver".equals(registrationId)) {
             Map<String, Object> response = (Map<String, Object>) attributes.get("response");
             loginId = response.get("id").toString();
             email = (String) response.get("email");
             name = (String) response.get("name");
-            log.info("naver,response={}", response);
         } else {
             throw new IllegalArgumentException("지원하지 않는 소셜 로그인입니다.");
         }

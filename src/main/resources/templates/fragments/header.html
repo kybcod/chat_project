@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
 </head>
@@ -8,8 +9,10 @@
 <div th:fragment="header">
     <h1>Chat</h1>
     <header>
-        <a th:href="@{/login}">로그인</a>
+        <a th:href="@{/login}" sec:authorize="isAnonymous()">로그인</a>
+        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">로그아웃</a>
     </header>
+
 </div>
 
 </body>
