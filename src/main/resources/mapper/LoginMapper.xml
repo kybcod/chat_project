@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hello.chat.login.mapper.LoginMapper">
+
+    <!-- loginId로 User 조회 -->
+    <select id="findUserByLoginId" parameterType="string" resultType="hello.chat.login.domain.User">
+        SELECT id, login_id AS loginId, password, email, name, role
+        FROM user
+        WHERE login_id = #{loginId}
+    </select>
+
+    <!-- User 저장 -->
+    <insert id="save" parameterType="hello.chat.login.domain.User" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO user (login_id, password, email, name, role)
+        VALUES (#{loginId}, #{password}, #{email}, #{name}, #{role})
+    </insert>
+
+</mapper>
