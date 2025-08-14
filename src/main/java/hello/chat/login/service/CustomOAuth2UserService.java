@@ -1,5 +1,6 @@
 package hello.chat.login.service;
 
+import hello.chat.login.domain.CustomOAuth2User;
 import hello.chat.login.domain.User;
 import hello.chat.login.mapper.LoginMapper;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             loginId = (String) attributes.get("sub");
             email = (String) attributes.get("email");
             name = (String) attributes.get("name");
+            profileImage = (String) attributes.get("picture");
         } else if ("kakao".equals(registrationId)) {
             Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
             Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
@@ -56,20 +58,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             loginId = response.get("id").toString();
             email = (String) response.get("email");
             name = (String) response.get("name");
+            profileImage = (String) response.get("profile_image");
         } else {
             throw new IllegalArgumentException("지원하지 않는 소셜 로그인입니다.");
         }
 
-        User user = saveUser(loginId, email, name);
+        User user = saveUser(loginId, email, name, profileImage);
 
-        return new DefaultOAuth2User(
+        return new CustomOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole())),
                 attributes,
-                userNameAttributeName
+                userNameAttributeName,
+                loginId
         );
     }
 
-    private User saveUser(String loginId, String email, String name) {
+    private User saveUser(String loginId, String email, String name, String profileImage) {
         // DB에 사용자 없으면 새로 저장
         User user = loginMapper.findUserByLoginId(loginId);
         if (user == null) {
@@ -77,6 +81,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .loginId(loginId)
                     .email(email)
                     .name(name)
+                    .profileImage(profileImage)
                     .role("USER")
                     .password("") // 소셜 로그인은 비밀번호 없음
                     .build();

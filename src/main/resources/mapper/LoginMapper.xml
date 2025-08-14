@@ -7,15 +7,15 @@
 
     <!-- loginId로 User 조회 -->
     <select id="findUserByLoginId" parameterType="string" resultType="hello.chat.login.domain.User">
-        SELECT id, login_id AS loginId, password, email, name, role
+        SELECT id, login_id AS loginId, password, email, name, profile_image,role
         FROM user
         WHERE login_id = #{loginId}
     </select>
 
     <!-- User 저장 -->
     <insert id="save" parameterType="hello.chat.login.domain.User" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO user (login_id, password, email, name, role)
-        VALUES (#{loginId}, #{password}, #{email}, #{name}, #{role})
+        INSERT INTO user (login_id, password, email, profile_image,name, role)
+        VALUES (#{loginId}, #{password}, #{email}, #{profileImage},#{name}, #{role})
     </insert>
 
 </mapper>

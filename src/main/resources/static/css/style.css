@@ -1,12 +1,41 @@
 /* style.css */
 
-header {
+.header-top {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Chat 왼쪽, 유저 섹션 오른쪽 */
     align-items: center;
     padding: 10px 20px;
     border-bottom: 1px solid #ccc;
 }
+
+.user-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.login-buttons {
+    display: flex;
+    flex-direction: column; /* 위아래 정렬 */
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-info img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
 
 /* 레이아웃 스타일 */
 .container {
