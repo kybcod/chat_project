@@ -12,9 +12,9 @@
     <header class="header-top">
         <h1>Chat</h1>
 
-        <div class="user-section" th:if="${loginUser}">
+        <div class="user-section">
 
-            <div class="user-info">
+            <div class="user-info" th:if="${loginUser}">
                 <span th:text="${loginUser.name}">User Name</span>
                 <img th:if="${loginUser.profileImage != null}" th:src="${loginUser.profileImage}" alt="Profile Image" />
             </div>
