@@ -1,25 +1,53 @@
-/* style.css */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;        /* 전체 높이 */
+    width: 100%;         /* 전체 너비 */
+}
 
-.header-top {
+.home-container {
     display: flex;
-    justify-content: space-between; /* Chat 왼쪽, 유저 섹션 오른쪽 */
-    align-items: center;
-    padding: 10px 20px;
-    border-bottom: 1px solid #ccc;
+    height: 100%;
+    width: 100%;
+}
+
+/* 사이드바 */
+nav.sidebar {
+    width: 250px;
+    height: 100%;
+    background-color: #202123;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s;
+    padding: 10px;
+}
+
+nav.sidebar.collapsed {
+    width: 60px;
+}
+
+.menu-toggle {
+    cursor: pointer;
+    font-size: 24px;
+    padding: 10px;
+}
+
+.menu-item {
+    padding: 15px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.menu-item:hover {
+    background-color: #343541;
 }
 
 .user-section {
+    margin-top: auto;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    gap: 5px;
-}
-
-.login-buttons {
-    display: flex;
-    flex-direction: column; /* 위아래 정렬 */
-    align-items: flex-end;
-    gap: 5px;
+    gap: 10px;
 }
 
 .user-info {
@@ -29,67 +57,24 @@
 }
 
 .user-info img {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    object-fit: cover;
 }
 
-
-
-/* 레이아웃 스타일 */
-.container {
-    display: flex;
-    height: calc(100vh - 50px); /* 헤더 높이 제외 */
-}
-
-nav {
-    width: 150px;
-    border-right: 1px solid #ccc;
-    padding: 10px;
-}
-
-main {
-    flex: 1;
-    padding: 20px;
-}
-
-/* 로그인 */
-.login-modal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-.login-modal h2 {
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.social-login-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 15px;
-    padding: 0;
-    transition: transform 0.2s ease;
-
-}
-
-.social-login-btn:hover {
-    transform: scale(1.05);
-}
-
-.social-login-btn:active {
-    transform: scale(0.95);
-}
-
-.social-login-btn img {
-    width: 200px;
-    height: 50px;
-    object-fit: contain;
+.login-buttons a {
     display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 0;
+}
+
+/* 메인 영역 */
+main#main-content {
+    flex: 1;
+    background-color: #343541;
+    color: #fff;
+    padding: 20px;
+    overflow-y: auto;
+    height: 100%;
 }
