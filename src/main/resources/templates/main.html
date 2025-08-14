@@ -19,6 +19,23 @@
 
 <script th:inline="javascript">
     const isAuthenticated = /*[[${#authorization.expression('isAuthenticated()')}]]*/ false;
+
+    function loadContent(url) {
+        if (!isAuthenticated) {
+            window.location.href = '/login';
+        } else {
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (html) {
+                    $("#main-content").html(html);
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
+                }
+            });
+        }
+    }
 </script>
 <script src="/js/main.js"></script>
 </body>
