@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <th:block th:replace="~{fragments/scripts.html :: scripts}"></th:block>
+</head>
+<body>
+
+<div class="home-container">
+    <!-- 사이드바 -->
+    <th:block th:replace="~{fragments/sideNav.html :: sideNav}"></th:block>
+
+    <!-- 메인 영역 -->
+    <main id="main-content">
+        <p>메인 영역</p>
+    </main>
+</div>
+
+<script th:inline="javascript">
+    const isAuthenticated = /*[[${#authorization.expression('isAuthenticated()')}]]*/ false;
+</script>
+<script src="/js/main.js"></script>
+</body>
+</html>

@@ -12,8 +12,8 @@ public class ViewController {
 
 
     @GetMapping("/")
-    public String home() {
-        return "home";
+    public String main() {
+        return "main";
     }
 
     @GetMapping("/chatting")
