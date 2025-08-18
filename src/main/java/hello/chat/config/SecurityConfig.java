@@ -15,9 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
-    private static final String[] WHITELIST = {
-            "/", "/oauth2/**", "/css/**", "/js/**", "/images/**", "/login"
-    };
+    private static final String[] WHITELIST = {"/", "/oauth2/**", "/css/**", "/js/**", "/images/**", "/login"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
