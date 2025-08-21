@@ -1,6 +1,6 @@
-package hello.chat.config;
+package hello.chatting.config;
 
-import hello.chat.login.service.CustomOAuth2UserService;
+import hello.chatting.login.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

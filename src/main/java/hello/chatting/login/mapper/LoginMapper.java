@@ -1,6 +1,6 @@
-package hello.chat.login.mapper;
+package hello.chatting.login.mapper;
 
-import hello.chat.login.domain.User;
+import hello.chatting.login.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

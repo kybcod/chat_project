@@ -1,4 +1,4 @@
-package hello.chat.login.domain;
+package hello.chatting.login.domain;
 
 import lombok.*;
 
