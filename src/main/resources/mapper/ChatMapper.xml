@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hello.chatting.chatroom.mapper.ChatRoomMapper">
+
+    <!-- 모든 채팅방 조회 -->
+    <select id="findAllRoom" resultType="hello.chatting.chatroom.dto.ChatRoom">
+        SELECT room_id AS roomId, name, created_at AS createdAt
+        FROM chat_room
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 채팅방 생성 -->
+    <insert id="createChatRoom" useGeneratedKeys="true" keyProperty="roomId">
+        INSERT INTO chat_room (name, created_at)
+        VALUES (CONCAT('room_', NOW()), NOW())
+    </insert>
+
+    <!-- 특정 채팅방 조회 -->
+    <select id="findRoomById" parameterType="String" resultType="hello.chatting.chatroom.dto.ChatRoom">
+        SELECT room_id AS roomId, name, created_at AS createdAt
+        FROM chat_room
+        WHERE room_id = #{roomId}
+    </select>
+
+</mapper>

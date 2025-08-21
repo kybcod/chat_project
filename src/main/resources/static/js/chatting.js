@@ -1,0 +1,39 @@
+var roomId = 'test-room';
+var stompClient = null;
+
+
+function sendMessage() {
+    var msgInput = document.getElementById('messageInput');
+    var message = {
+        type: 'TALK',
+        roomId: roomId,
+        sender: 'user1', // 실제 로그인 사용자 ID 넣기
+        message: msgInput.value
+    };
+
+    stompClient.send("/pub/chat/message", {}, JSON.stringify(message));
+    msgInput.value = '';
+}
+
+function showMessage(message) {
+    var chatBox = document.getElementById('chatBox');
+    var msgDiv = document.createElement('div');
+    msgDiv.textContent = message.sender + ": " + message.message;
+    chatBox.appendChild(msgDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function connect() {
+    var socket = new SockJS('/ws-stomp');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function(frame) {
+        console.log('Connected: ' + frame);
+
+        // 구독
+        stompClient.subscribe('/sub/chat/room/' + roomId, function(chatMessage){
+            showMessage(JSON.parse(chatMessage.body));
+        });
+    });
+}
+
+connect();

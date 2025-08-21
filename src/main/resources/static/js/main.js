@@ -8,3 +8,4 @@ $('.menu-toggle').on('click', function() {
         $('.user-info-name').show();
     }
 });
+
