@@ -6,14 +6,14 @@
 </head>
 <body>
 
-<div th:fragment="chatting">
-    <h2>채팅방</h2>
-    <div>
-        <input type="text" id="messageInput" placeholder="메시지를 입력하세요">
-        <button onclick="sendMessage()">전송</button>
+<div th:fragment="chatting" class="chat-container">
+    <div id="chatBox" class="chat-box">
+        <!-- 메시지들이 여기 들어감 -->
     </div>
 
-    <div id="chatBox" style="border:1px solid black; height:300px; overflow-y:scroll;">
+    <div class="chat-input-area">
+        <input type="text" id="messageInput" placeholder="메시지를 입력하세요">
+        <button onclick="sendMessage()">전송</button>
     </div>
 </div>
 
