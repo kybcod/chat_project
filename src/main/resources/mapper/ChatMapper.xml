@@ -13,9 +13,9 @@
     </select>
 
     <!-- 채팅방 생성 -->
-    <insert id="createChatRoom" useGeneratedKeys="true" keyProperty="roomId">
-        INSERT INTO chat_room (name, created_at)
-        VALUES (CONCAT('room_', NOW()), NOW())
+    <insert id="createChatRoom" useGeneratedKeys="true" keyProperty="roomId" parameterType="hello.chatting.chatroom.dto.ChatRoom">
+        INSERT INTO chat_room (room_id, name, created_at)
+        VALUES (#{roomId}, null, NOW())
     </insert>
 
     <!-- 특정 채팅방 조회 -->

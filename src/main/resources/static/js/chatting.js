@@ -6,7 +6,7 @@ function sendMessage() {
     var msgInput = document.getElementById('messageInput');
     var message = {
         type: 'TALK',
-        roomId: roomId,
+        roomId: null,
         sender: loginUser.name,
         message: msgInput.value
     };

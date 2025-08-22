@@ -1,5 +1,6 @@
 package hello.chatting.chatroom.service;
 
+import hello.chatting.chat.ChatMessage;
 import hello.chatting.chatroom.dto.ChatRoom;
 import hello.chatting.chatroom.mapper.ChatRoomMapper;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class ChatRoomService {
         return chatRoomMapper.findAllRoom();
     }
 
-    public ChatRoom createChatRoom() {
-        return chatRoomMapper.createChatRoom();
+    public void createChatRoom(ChatRoom chatRoom) {
+        chatRoomMapper.createChatRoom(chatRoom);
     }
 
     public ChatRoom findRoomById(String roomId) {
