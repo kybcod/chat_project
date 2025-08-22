@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="scripts">
+    <!-- favicon 오류 삭제 -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
     <script src="../../js/jquery/toastui-editor-all.min.js"></script>
     <link rel="stylesheet" href="../../css/jquery/toastui-editor.min.css" />
 
@@ -10,10 +13,13 @@
     <script src="../../js/jquery/jquery-3.7.1.min.js"></script>
     <script src="../../js/jquery/jquery.validate.min.js"></script>
 
+    <!-- 소켓 -->
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 
+    <!-- 화면 js -->
     <script src="../../js/chatting.js"></script>
+    <script src="../../js/main.js"></script>
 
 </th:block>
 </html>
