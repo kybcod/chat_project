@@ -26,7 +26,9 @@ public class GlobalControllerAdvice {
                 Map<String, Object> response = (Map<String, Object>) customUser.getAttributes().get("response");
                 return User.builder()
                         .loginId(customUser.getName())
+                        .email((String) response.get("email"))
                         .name((String) response.get("name"))
+                        .role((String) response.get("role"))
                         .profileImage((String) response.get("profile_image"))
                         .build();
             }
