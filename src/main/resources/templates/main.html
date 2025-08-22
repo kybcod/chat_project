@@ -19,6 +19,7 @@
 
 <script th:inline="javascript">
     const isAuthenticated = /*[[${#authorization.expression('isAuthenticated()')}]]*/ false;
+    window.loginUser = /*[[${loginUser}]]*/ null;
 
     function loadContent(url) {
         if (!isAuthenticated) {
