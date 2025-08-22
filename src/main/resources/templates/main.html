@@ -18,7 +18,6 @@
 </div>
 
 <script th:inline="javascript">
-    console.log("안녕ssxxxxssss")
     const isAuthenticated = /*[[${#authorization.expression('isAuthenticated()')}]]*/ false;
     window.loginUser = /*[[${loginUser}]]*/ null;
 
@@ -51,6 +50,8 @@
             $('.user-info-name').show();
         }
     });
+
+    showChattingList();
 </script>
 </body>
 </html>
