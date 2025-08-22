@@ -16,12 +16,12 @@ public class ViewController {
 
     @GetMapping("/chatting")
     public String chatting() {
-        return "chat/chatting :: content";
+        return "chat/chatting";
     }
 
     @GetMapping("/chatbot")
     public String chatbot() {
-        return "chat/chatbot :: content";
+        return "chat/chatbot";
     }
 
     @GetMapping("/login")

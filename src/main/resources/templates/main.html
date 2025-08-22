@@ -13,11 +13,12 @@
 
     <!-- 메인 영역 -->
     <main id="main-content">
-        <p>메인 영역</p>
+        <th:block th:replace="~{chat/chatting :: chatting}"></th:block>
     </main>
 </div>
 
 <script th:inline="javascript">
+    console.log("안녕ssxxxxssss")
     const isAuthenticated = /*[[${#authorization.expression('isAuthenticated()')}]]*/ false;
     window.loginUser = /*[[${loginUser}]]*/ null;
 
@@ -29,7 +30,9 @@
                 url: url,
                 type: "GET",
                 success: function (html) {
-                    $("#main-content").html(html);
+                    const wrapper = $('<div>').addClass('contents');
+                    wrapper.html(html);
+                    $("#main-content").html(wrapper);
                 },
                 error: function (xhr, status, error) {
                     console.error("AJAX Error:", status, error);
