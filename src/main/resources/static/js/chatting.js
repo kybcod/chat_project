@@ -7,7 +7,7 @@ function sendMessage() {
     var message = {
         type: 'TALK',
         roomId: roomId,
-        sender: loginUser.name, // 실제 로그인 사용자 ID 넣기
+        sender: loginUser.name,
         message: msgInput.value
     };
 
