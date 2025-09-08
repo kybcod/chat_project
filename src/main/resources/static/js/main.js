@@ -29,6 +29,9 @@ const chatbotList = [
 function showChattingList() {
     loadContent('/chatting')
 
+    // new 채팅방 생성
+
+
     const container = document.querySelector(".chatting-list");
     container.innerHTML = ""; // 초기화
 

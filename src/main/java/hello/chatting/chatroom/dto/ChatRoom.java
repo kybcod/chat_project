@@ -1,12 +1,14 @@
 package hello.chatting.chatroom.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-
-import java.util.UUID;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChatRoom {
     private String id;
     private String roomId;

@@ -23,15 +23,6 @@ public class ChatController {
 
     @MessageMapping("chat/message")
     public void message(ChatMessage message) {
-
-        if (message.getRoomId() == null || message.getRoomId().isEmpty()) {
-            String newRoomId = UUID.randomUUID().toString();
-            message.setRoomId(newRoomId);
-
-            ChatRoom chatRoom = ChatRoom.builder().roomId(message.getRoomId()).build();
-            chatRoomService.createChatRoom(chatRoom);
-        }
-
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 }
