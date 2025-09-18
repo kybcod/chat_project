@@ -13,7 +13,10 @@
         <div class="menu-toggle">☰</div>
 
         <!-- 메뉴 항목 -->
-        <div class="menu-item" onclick="showChattingList()">채팅</div>
+        <div class="menu-item" onclick="showChattingList()">
+            <span class="icon">💬</span>
+            <span class="label">채팅</span>
+        </div>
 
         <div class="chatting-list"></div>
 
@@ -25,8 +28,16 @@
             </div>
 
             <div class="login-buttons">
-                <a th:href="@{/login}" sec:authorize="isAnonymous()">로그인</a>
-                <a th:href="@{/logout}" sec:authorize="isAuthenticated()">로그아웃</a>
+                <!-- 로그아웃 -->
+                <a th:href="@{/logout}" sec:authorize="isAuthenticated()">
+                    <span class="icon">🔒</span>
+                    <span class="label">로그아웃</span>
+                </a>
+                <!-- 로그인 -->
+                <a th:href="@{/login}" sec:authorize="isAnonymous()">
+                    <span class="icon">🔓</span>
+                    <span class="label">로그인</span>
+                </a>
             </div>
         </div>
     </nav>
