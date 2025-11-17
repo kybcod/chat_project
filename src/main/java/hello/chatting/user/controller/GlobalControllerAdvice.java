@@ -1,8 +1,7 @@
-package hello.chatting.login.controller;
+package hello.chatting.user.controller;
 
-import hello.chatting.login.domain.CustomOAuth2User;
-import hello.chatting.login.domain.User;
-import hello.chatting.login.mapper.LoginMapper;
+import hello.chatting.user.domain.CustomOAuth2User;
+import hello.chatting.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -14,8 +13,6 @@ import java.util.Map;
 @ControllerAdvice
 @RequiredArgsConstructor
 public class GlobalControllerAdvice {
-
-    private final LoginMapper loginMapper;
 
     @ModelAttribute("loginUser")
     public User loginUser(Authentication authentication) {

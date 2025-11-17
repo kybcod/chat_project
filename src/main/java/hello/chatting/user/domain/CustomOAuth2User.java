@@ -1,4 +1,4 @@
-package hello.chatting.login.domain;
+package hello.chatting.user.domain;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
