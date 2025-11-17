@@ -20,7 +20,7 @@
   <div class="friend-list">
     <div th:each="user : ${users}" th:if="${user.loginId != loginUser.loginId}" class="friend-item">
       <div class="user-info">
-        <img thif="${user.profileImage != null}" th:src="${user.profileImage}" alt="Profile Image" class="profile-img">
+        <img th:if="${user.profileImage != null}" th:src="${user.profileImage}" alt="Profile Image" class="profile-img">
         <span th:text="${user.name}" class="profile-name">Friend Name</span>
       </div>
     </div>
