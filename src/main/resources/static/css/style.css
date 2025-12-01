@@ -20,6 +20,7 @@ nav.sidebar.collapsed .login-buttons .icon {display: inline-block;width: 20px;te
 nav.sidebar.collapsed .label {display: none;}
 /* collapse 모드일 때 채팅 리스트 숨김 */
 nav.sidebar.collapsed .chatting-list {display: none;}
+nav.sidebar.collapsed .friends-list {display: none;}
 
 /* 메인 영역 */
 main#main-content {flex: 1;background-color: #343541;color: #fff;padding: 20px;overflow-y: auto;height: 100%;}
@@ -40,14 +41,16 @@ main#main-content {flex: 1;background-color: #343541;color: #fff;padding: 20px;o
 .social-login-btn[href*="google"]:hover { background-color: #e5e5e5; }
 
 /* 리스트 컨테이너 */
-.chatting-list {margin-top: 15px;flex: 1;overflow-y: auto;padding-right: 5px;}
+.friends-list,
+.chatting-list {margin-top: 15px;margin-bottom: 10px;flex: 1;overflow-y: auto;padding-right: 5px;scrollbar-width: thin;scrollbar-color: #555 #222;}
 /* 공통 리스트 아이템 */
-.chatting-room-item,
-.chatbot-item {background-color: #2c2d30;padding: 10px 12px;margin-bottom: 8px;border-radius: 8px;cursor: pointer;font-size: 14px;color: #e0e0e0;transition: all 0.2s ease;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.chatting-item,
+.friends-item {background-color: #2c2d30;padding: 10px 12px;margin-bottom: 8px;border-radius: 8px;cursor: pointer;font-size: 14px;color: #e0e0e0;transition: all 0.2s ease;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 /* Hover 시 효과 */
-.chatting-room-item:hover,
-.chatbot-item:hover {background-color: #3c3d40;color: #ffffff;transform: translateX(3px);}
+.chatting-item:hover,
+.friends-item:hover {background-color: #3c3d40;color: #ffffff;transform: translateX(3px);}
 /* 리스트 영역 구분선 */
+.friends-list::before,
 .chatting-list::before {content: "리스트";display: block;font-size: 12px;color: #aaa;margin-bottom: 10px;text-transform: uppercase;letter-spacing: 1px;}
 /* 채팅 전체 컨테이너 */
 .chat-container {display: flex;flex-direction: column;height: 100%; /* 부모 height 기준으로 꽉 차게 */gap: 10px;}
