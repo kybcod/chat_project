@@ -21,7 +21,9 @@ function showFriendList() {
             const containerFri = document.querySelector(".friends-list");
             containerFri.innerHTML = "";
 
-            friends.forEach(fri => {
+            friends
+                .filter(fri => fri.loginId !== loginUser.loginId)
+                .forEach(fri => {
                 const div = document.createElement("div");
                 div.classList.add("friends-item");
 
