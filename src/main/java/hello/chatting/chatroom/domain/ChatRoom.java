@@ -22,12 +22,8 @@ public class ChatRoom {
 
     private String roomName;     // 그룹방 이름, 1:1은 null
     private String type;         // PRIVATE / GROUP
+
+    @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @PrePersist
-    public void prePersist() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
-    }
 }

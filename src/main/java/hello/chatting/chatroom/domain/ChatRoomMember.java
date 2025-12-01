@@ -29,12 +29,7 @@ public class ChatRoomMember {
     @Builder.Default
     private String role = "MEMBER";
 
+    @Column(insertable = false, updatable = false)
     private LocalDateTime joinedAt;
 
-    @PrePersist
-    public void prePersist() {
-        if (joinedAt == null) {
-            joinedAt = LocalDateTime.now();
-        }
-    }
 }
