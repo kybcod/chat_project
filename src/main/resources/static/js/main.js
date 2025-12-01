@@ -40,6 +40,10 @@ function showFriendList() {
                 div.appendChild(img);
                 div.appendChild(nameSpan);
 
+                div.addEventListener("dblclick", function() {
+                    openChatWith(fri.loginId);
+                });
+
                 containerFri.appendChild(div);
             });
         },

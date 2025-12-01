@@ -20,16 +20,21 @@ public class ChatRoomMember {
     private Long id;
 
     @Column(nullable = false)
-    private Long roomId;
+    private Long roomId;         // ChatRoom.id FK
 
     @Column(nullable = false)
-    private Long userId;
+    private String userId;
 
     @Column(length = 20)
     @Builder.Default
-    private String role = "MEMBER"; // 기본값 설정
+    private String role = "MEMBER";
 
-    @Builder.Default
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime joinedAt = LocalDateTime.now();
+    private LocalDateTime joinedAt;
+
+    @PrePersist
+    public void prePersist() {
+        if (joinedAt == null) {
+            joinedAt = LocalDateTime.now();
+        }
+    }
 }

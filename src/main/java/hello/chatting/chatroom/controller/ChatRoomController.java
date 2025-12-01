@@ -17,4 +17,15 @@ import java.util.UUID;
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
+
+    @PostMapping("find")
+    public ChatRoom findRoom(String me, String friendId) {
+        return chatRoomService.findPrivateRoom(me, friendId);
+    }
+
+    @PostMapping("create")
+    public ChatRoom createRoom(String me, String friend) {
+        return chatRoomService.createPrivateRoom(me, friend);
+    }
+
 }
