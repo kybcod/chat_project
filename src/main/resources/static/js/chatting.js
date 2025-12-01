@@ -77,7 +77,24 @@ function enterRoom(room_id) {
         showMessage(JSON.parse(messageOutput.body));
     });
 
-    // 채팅 화면 초기화
-    document.getElementById('chatBox').innerHTML = '';
+    messageOutput(roomId)
 }
 
+function messageOutput(roomId) {
+
+    document.getElementById('chatBox').innerHTML = '';
+
+
+    $.ajax({
+        url: "/chat/messages/" + roomId,
+        type: "GET",
+        success: function(messages) {
+            messages.forEach(function(message) {
+                showMessage(message);
+            });
+        },
+        error: function(err) {
+            console.error("메시지 불러오기 실패", err);
+        }
+    });
+}
