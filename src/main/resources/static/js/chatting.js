@@ -3,10 +3,12 @@ var stompClient = null;
 
 
 function sendMessage() {
+    // 방생성
+
     var msgInput = document.getElementById('messageInput');
     var message = {
         type: 'TALK',
-        roomId: null,
+        roomId: roomId,
         sender: loginUser.name,
         message: msgInput.value
     };
@@ -26,7 +28,7 @@ function showMessage(message) {
         msgDiv.classList.add('other'); // 상대 메시지
     }
 
-    msgDiv.textContent = message.sender + ": " + message.message;
+    msgDiv.textContent = message.message;
     chatBox.appendChild(msgDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
