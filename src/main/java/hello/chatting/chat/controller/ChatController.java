@@ -1,8 +1,7 @@
 package hello.chatting.chat.controller;
 
-import hello.chatting.chat.ChatMessage;
-import hello.chatting.chatroom.repository.ChatRoomRepository;
-import hello.chatting.chatroom.service.ChatRoomService;
+import hello.chatting.chat.domain.ChatMessage;
+import hello.chatting.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,8 +14,7 @@ import org.springframework.stereotype.Controller;
 public class ChatController {
 
     private final SimpMessageSendingOperations messagingTemplate;
-    private final ChatRoomRepository chatRoomRepository;
-    private final ChatRoomService chatRoomService;
+    private final ChatService chatService;
 
     @MessageMapping("chat/message")
     public void message(ChatMessage message) {
