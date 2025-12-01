@@ -2,7 +2,7 @@ package hello.chatting.user.service;
 
 import hello.chatting.user.domain.CustomOAuth2User;
 import hello.chatting.user.domain.User;
-import hello.chatting.user.mapper.UserMapper;
+import hello.chatting.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +19,7 @@ import java.util.Map;
 @Slf4j
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
@@ -73,19 +73,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User saveUser(String loginId, String email, String name, String profileImage) {
-        // DB에 사용자 없으면 새로 저장
-        User user = userMapper.findUserByLoginId(loginId);
-        if (user == null) {
-            user = User.builder()
-                    .loginId(loginId)
-                    .email(email)
-                    .name(name)
-                    .profileImage(profileImage)
-                    .role("USER")
-                    .password("") // 소셜 로그인은 비밀번호 없음
-                    .build();
-            userMapper.save(user); // 저장 메서드 필요
-        }
-        return user;
+        return userRepository.findByLoginId(loginId)
+                .orElseGet(() -> {
+                    User newUser = User.builder()
+                            .loginId(loginId)
+                            .email(email)
+                            .name(name)
+                            .profileImage(profileImage)
+                            .role("USER")
+                            .password("") // 소셜 로그인용
+                            .build();
+                    return userRepository.save(newUser);
+                });
     }
 }

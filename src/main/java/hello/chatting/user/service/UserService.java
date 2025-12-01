@@ -1,7 +1,7 @@
 package hello.chatting.user.service;
 
 import hello.chatting.user.domain.User;
-import hello.chatting.user.mapper.UserMapper;
+import hello.chatting.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,9 +12,9 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class UserService {
-    private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
     public List<User> findAll() {
-        return userMapper.findAll();
+        return userRepository.findAll();
     }
 }
