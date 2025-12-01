@@ -18,6 +18,11 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
 
+    @GetMapping
+    public List<ChatRoom> findAll() {
+        return chatRoomService.findAll();
+    }
+
     @PostMapping("find")
     public ChatRoom findRoom(String me, String friendId) {
         return chatRoomService.findPrivateRoom(me, friendId);

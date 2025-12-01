@@ -64,5 +64,7 @@ function createPrivateRoom(friendLoginId) {
 }
 
 function enterRoom(roomId) {
+
+    // 그려줘야 함
     window.location.href = "/chat/room/" + roomId;
 }

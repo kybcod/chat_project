@@ -57,23 +57,28 @@ function showFriendList() {
 
 
 function showChattingList(){
+    $.ajax({
+        url: "/chatRoom",
+        type: "GET",
+        success: function (chattingRooms) {
+            const container = document.querySelector(".chatting-list");
+            container.innerHTML = ""; // 초기화
 
-    const chattingRooms = [
-        { id: 1, name: "채팅1" },
-        { id: 2, name: "채팅2" },
-        { id: 3, name: "채팅3" },
-        { id: 4, name: "채팅3" },
-        { id: 5, name: "채팅3" },
-        { id: 6, name: "채팅3" }
-    ];
+            chattingRooms.forEach(room => {
+                const div = document.createElement("div");
+                div.classList.add("chatting-item");
+                div.textContent = room.roomName;
+                div.addEventListener("dblclick", function() {
+                    enterRoom(room.id);
+                });
 
-    const container = document.querySelector(".chatting-list");
-    container.innerHTML = ""; // 초기화
-
-    chattingRooms.forEach(room => {
-        const div = document.createElement("div");
-        div.classList.add("chatting-item");
-        div.textContent = room.name;
-        container.appendChild(div);
+                container.appendChild(div);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error:", status, error);
+        }
     });
+
+
 }
