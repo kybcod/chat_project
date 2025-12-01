@@ -1,13 +1,14 @@
-var roomId = 'test-room';
+var roomId= null;
 var stompClient = null;
-
+var subscription = null;
 
 function sendMessage() {
+
     var msgInput = document.getElementById('messageInput');
     var message = {
         type: 'TALK',
         roomId: roomId,
-        sender: loginUser.name,
+        sender: loginUser.loginId,
         message: msgInput.value
     };
 
@@ -20,7 +21,7 @@ function showMessage(message) {
     var msgDiv = document.createElement('div');
     msgDiv.classList.add('chat-message');
 
-    if(message.sender === loginUser.name) {
+    if(message.sender === loginUser.loginId) {
         msgDiv.classList.add('self'); // 내 메시지
     } else {
         msgDiv.classList.add('other'); // 상대 메시지
@@ -63,8 +64,20 @@ function createPrivateRoom(friendLoginId) {
     });
 }
 
-function enterRoom(roomId) {
+function enterRoom(room_id) {
+    roomId = room_id;
 
-    // 그려줘야 함
-    window.location.href = "/chat/room/" + roomId;
+    // 이전 구독 해제
+    if(subscription) {
+        subscription.unsubscribe();
+    }
+
+    // 새로운 구독
+    subscription = stompClient.subscribe("/sub/chat/room/" + roomId, function(messageOutput) {
+        showMessage(JSON.parse(messageOutput.body));
+    });
+
+    // 채팅 화면 초기화
+    document.getElementById('chatBox').innerHTML = '';
 }
+
