@@ -21,6 +21,8 @@ function sendMessage() {
 
     stompClient.send("/pub/chat/message", {}, JSON.stringify(message));
     msgInput.value = '';
+
+    showChattingList();
 }
 
 function showMessage(message) {
