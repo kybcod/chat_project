@@ -35,6 +35,11 @@ public class ViewController {
         return "user/login";
     }
 
+    @GetMapping("/.well-known/appspecific/com.chrome.devtools.json")
+    @ResponseBody
+    public ResponseEntity<String> chromeDevTools() {
+        return ResponseEntity.ok().body(""); // Return an empty 200 OK response
+    }
 
 }
 

@@ -23,20 +23,20 @@ public class ChatRoomController {
     @GetMapping("/list")
     public List<ChatRoomDto> findAllByUserId(ChatRoomReqDto dto) {
         return chatRoomService.findAllByUserId(dto.getUserId()).stream()
-                .map(ChatRoomDto::toDto)
+                .map(chatRoom -> ChatRoomDto.toDto(chatRoom, dto.getUserId()))  // 친구 이름만 반환
                 .collect(Collectors.toList());
     }
 
     @PostMapping("find")
     public ChatRoomDto findRoom(@Valid @RequestBody ChatRoomReqDto dto) throws Exception {
         ChatRoom privateRoom = chatRoomService.findPrivateRoom(dto);
-        return ChatRoomDto.toDto(privateRoom);
+        return ChatRoomDto.toDto(privateRoom, dto.getUserId());
     }
 
     @PostMapping("create")
     public ChatRoomDto createRoom(@Valid @RequestBody ChatRoomReqDto dto) throws Exception {
         ChatRoom room = chatRoomService.createPrivateRoom(dto);
-        return ChatRoomDto.toDto(room);
+        return ChatRoomDto.toDto(room, dto.getUserId());
     }
 
 }

@@ -41,12 +41,20 @@ public class ChatRoomService {
     @Transactional
     public ChatRoom createPrivateRoom(ChatRoomReqDto dto) throws Exception {
 
-        String friend = dto.getFriendId();
+        String userId = dto.getUserId();
+        String friendId = dto.getFriendId();
+
+        String userName = userRepository.findByLoginId(userId)
+                .orElseThrow(() -> new RuntimeException("사용자 없음: " + userId))
+                .getName();
+        String friendName = userRepository.findByLoginId(friendId)
+                .orElseThrow(() -> new RuntimeException("사용자 없음: " + friendId))
+                .getName();
 
         // ChatRoom 생성
         ChatRoom room = ChatRoom.builder()
                 .type(RoomType.PRIVATE)
-                .roomName("")
+                .roomName(userName + ", " + friendName)
                 .build();
         room = chatRoomRepository.save(room);
 
@@ -61,7 +69,7 @@ public class ChatRoomService {
         // 친구 멤버 등록
         ChatRoomMember friendMember = ChatRoomMember.builder()
                 .roomId(room.getId())
-                .userId(friend)
+                .userId(friendId)
                 .build();
         chatRoomMemberRepository.save(friendMember);
 
