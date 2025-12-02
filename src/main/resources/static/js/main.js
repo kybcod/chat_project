@@ -44,8 +44,8 @@ function showFriendList() {
                 containerFri.appendChild(div);
             });
         },
-        error: function (xhr, status, error) {
-            console.error("Error:", status, error);
+        error: function (xhr, status, err) {
+            basicAlert({ icon: 'error', text: err.responseJSON?.msg || err.responseText });
         }
     });
 }
@@ -71,8 +71,8 @@ function showChattingList(){
                 container.appendChild(div);
             });
         },
-        error: function (xhr, status, error) {
-            console.error("Error:", status, error);
+        error: function (xhr, status, err) {
+            basicAlert({ icon: 'error', text: err.responseJSON?.msg || err.responseText });
         }
     });
 

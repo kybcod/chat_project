@@ -1,6 +1,7 @@
 package hello.chatting.chatroom.dto;
 
 import hello.chatting.chatroom.domain.ChatRoom;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatRoomReqDto {
+
+    @NotNull(message = "내 아이디")
     private String userId;
+
+    @NotNull(message = "친구 아이디")
     private String friendId;
 }

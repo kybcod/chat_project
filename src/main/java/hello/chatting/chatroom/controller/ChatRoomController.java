@@ -4,6 +4,7 @@ import hello.chatting.chatroom.domain.ChatRoom;
 import hello.chatting.chatroom.dto.ChatRoomDto;
 import hello.chatting.chatroom.dto.ChatRoomReqDto;
 import hello.chatting.chatroom.service.ChatRoomService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +28,13 @@ public class ChatRoomController {
     }
 
     @PostMapping("find")
-    public ChatRoomDto findRoom(@RequestBody ChatRoomReqDto dto) {
+    public ChatRoomDto findRoom(@Valid @RequestBody ChatRoomReqDto dto) {
         ChatRoom privateRoom = chatRoomService.findPrivateRoom(dto);
         return ChatRoomDto.toDto(privateRoom);
     }
 
     @PostMapping("create")
-    public ChatRoomDto createRoom(@RequestBody ChatRoomReqDto dto) {
+    public ChatRoomDto createRoom(@Valid @RequestBody ChatRoomReqDto dto) {
         ChatRoom room = chatRoomService.createPrivateRoom(dto);
         return ChatRoomDto.toDto(room);
     }

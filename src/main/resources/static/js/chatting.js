@@ -47,7 +47,12 @@ function openChatWith(friendLoginId) {
             } else {
                 createPrivateRoom(friendLoginId);
             }
+        },
+        error: function(xhr) {
+            let msg = xhr.responseJSON ? xhr.responseJSON.msg : xhr.responseText;
+            basicAlert({ icon: 'error', text: msg });
         }
+
     });
 }
 
@@ -62,6 +67,9 @@ function createPrivateRoom(friendLoginId) {
         }),
         success: function(room) {
             enterRoom(room.id);
+        },
+        error: function (xhr, status, err) {
+            basicAlert({ icon: 'error', text: err.responseJSON?.msg || err.responseText });
         }
     });
 }
