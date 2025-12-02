@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -26,13 +27,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId(); // google, kakao, naver
-        String userNameAttributeName = userRequest.getClientRegistration()
-                .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
         // 소셜 유저 정보
         Map<String, Object> attributes = oAuth2User.getAttributes();
-
-        log.info("OAuth2 attributes for provider {}: {}", registrationId, attributes);
 
         // Provider별 데이터 파싱
         String loginId;
@@ -64,10 +61,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         User user = saveUser(loginId, email, name, profileImage);
 
+        Map<String, Object> standardizedAttributes = new HashMap<>();
+        standardizedAttributes.put("loginId", loginId);
+        standardizedAttributes.put("email", email);
+        standardizedAttributes.put("name", name);
+        standardizedAttributes.put("profileImage", profileImage);
+        standardizedAttributes.put("provider", registrationId);
+
+
         return new CustomOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole())),
-                attributes,
-                userNameAttributeName,
+                standardizedAttributes,
+                "loginId",
                 loginId
         );
     }

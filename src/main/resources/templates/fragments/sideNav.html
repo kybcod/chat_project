@@ -35,7 +35,7 @@
         <div class="user-section">
             <div class="user-info" th:if="${loginUser}">
                 <span class="user-info-name" th:text="${loginUser.name}">User Name</span>
-                <img th:if="${loginUser.profileImage != null}" th:src="${loginUser.profileImage}" alt="Profile Image" />
+                <img th:src="${loginUser.profileImage} ?: '/images/orgProfile.png'" alt="Profile Image" />
             </div>
 
             <div class="login-buttons">

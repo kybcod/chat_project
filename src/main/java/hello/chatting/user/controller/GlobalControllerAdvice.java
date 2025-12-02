@@ -20,13 +20,13 @@ public class GlobalControllerAdvice {
             Object principal = authentication.getPrincipal();
 
             if (principal instanceof CustomOAuth2User customUser) {
-                Map<String, Object> response = (Map<String, Object>) customUser.getAttributes().get("response");
+                Map<String, Object> response = customUser.getAttributes();
                 return User.builder()
                         .loginId(customUser.getName())
                         .email((String) response.get("email"))
                         .name((String) response.get("name"))
                         .role((String) response.get("role"))
-                        .profileImage((String) response.get("profile_image"))
+                        .profileImage((String) response.get("profileImage"))
                         .build();
             }
 
