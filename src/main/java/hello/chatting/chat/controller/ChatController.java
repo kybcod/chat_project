@@ -1,6 +1,7 @@
 package hello.chatting.chat.controller;
 
 import hello.chatting.chat.domain.ChatMessage;
+import hello.chatting.chat.dto.ChatMessageDto;
 import hello.chatting.chat.repository.ChatRepository;
 import hello.chatting.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -23,22 +25,19 @@ public class ChatController {
     private final ChatService chatService;
 
     @MessageMapping("chat/message")
-    public void message(ChatMessage message) {
-
-        ChatMessage chatMessage = ChatMessage.builder()
-                .roomId(message.getRoomId())
-                .sender(message.getSender())
-                .message(message.getMessage())
-                .build();
-        chatService.save(chatMessage);
-
+    public void message(ChatMessageDto message) {
+        ChatMessage entity = ChatMessageDto.toEntity(message);
+        chatService.save(entity);
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 
     @GetMapping("/chat/messages/{roomId}")
     @ResponseBody
-    public List<ChatMessage> getMessages(@PathVariable Long roomId) {
-        return chatService.findByRoomIdOrderByCreatedAt(roomId);
+    public List<ChatMessageDto> getMessages(@PathVariable Long roomId) {
+        return chatService.findByRoomIdOrderByCreatedAt(roomId)
+                .stream()
+                .map(ChatMessageDto::toDto)
+                .collect(Collectors.toList());
     }
 
 }

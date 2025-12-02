@@ -1,6 +1,7 @@
 package hello.chatting.chat.service;
 
 import hello.chatting.chat.domain.ChatMessage;
+import hello.chatting.chat.dto.ChatMessageDto;
 import hello.chatting.chat.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
