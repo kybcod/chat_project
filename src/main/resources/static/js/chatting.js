@@ -36,10 +36,11 @@ function openChatWith(friendLoginId) {
     $.ajax({
         url: "/chatRoom/find",
         type: "POST",
-        data: {
-            me: loginUser.loginId,      // 내 로그인 ID
-            friendId: friendLoginId       // 친구 로그인 ID
-        },
+        contentType: "application/json",
+        data: JSON.stringify({
+            userId: loginUser.loginId,
+            friendId: friendLoginId
+        }),
         success: function(room) {
             if (room) {
                 enterRoom(room.id);
@@ -54,10 +55,11 @@ function createPrivateRoom(friendLoginId) {
     $.ajax({
         url: "/chatRoom/create",
         type: "POST",
-        data: {
-            me: loginUser.loginId,
-            friend: friendLoginId
-        },
+        contentType: "application/json",
+        data: JSON.stringify({
+            userId: loginUser.loginId,
+            friendId: friendLoginId
+        }),
         success: function(room) {
             enterRoom(room.id);
         }

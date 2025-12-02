@@ -2,6 +2,7 @@ package hello.chatting.chatroom.controller;
 
 import hello.chatting.chatroom.domain.ChatRoom;
 import hello.chatting.chatroom.dto.ChatRoomDto;
+import hello.chatting.chatroom.dto.ChatRoomReqDto;
 import hello.chatting.chatroom.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,20 +20,22 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
     @GetMapping("/list")
-    public List<ChatRoomDto> findAllByUserId(String userId) {
-        return chatRoomService.findAllByUserId(userId).stream()
+    public List<ChatRoomDto> findAllByUserId(ChatRoomReqDto dto) {
+        return chatRoomService.findAllByUserId(dto.getUserId()).stream()
                 .map(ChatRoomDto::toDto)
                 .collect(Collectors.toList());
     }
 
     @PostMapping("find")
-    public ChatRoom findRoom(String me, String friendId) {
-        return chatRoomService.findPrivateRoom(me, friendId);
+    public ChatRoomDto findRoom(@RequestBody ChatRoomReqDto dto) {
+        ChatRoom privateRoom = chatRoomService.findPrivateRoom(dto);
+        return ChatRoomDto.toDto(privateRoom);
     }
 
     @PostMapping("create")
-    public ChatRoomDto createRoom(String me, String friend) {
-        return chatRoomService.createPrivateRoom(me, friend);
+    public ChatRoomDto createRoom(@RequestBody ChatRoomReqDto dto) {
+        ChatRoom room = chatRoomService.createPrivateRoom(dto);
+        return ChatRoomDto.toDto(room);
     }
 
 }
