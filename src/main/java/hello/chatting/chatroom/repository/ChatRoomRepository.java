@@ -1,6 +1,7 @@
 package hello.chatting.chatroom.repository;
 
 import hello.chatting.chatroom.domain.ChatRoom;
+import hello.chatting.chatroom.domain.RoomType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,11 +16,11 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
         SELECT r FROM ChatRoom r
             JOIN ChatRoomMember m1 ON r.id = m1.roomId
             JOIN ChatRoomMember m2 ON r.id = m2.roomId
-        WHERE r.type = 'PRIVATE'
+        WHERE r.type = :type
           AND m1.userId = :me
           AND m2.userId = :friendId
     """)
-    ChatRoom findPrivateRoom(String me, String friendId);
+    ChatRoom findPrivateRoom(String me, String friendId, RoomType type);
 
     @Query("""
         SELECT cr FROM ChatRoom cr

@@ -28,13 +28,13 @@ public class ChatRoomController {
     }
 
     @PostMapping("find")
-    public ChatRoomDto findRoom(@Valid @RequestBody ChatRoomReqDto dto) {
+    public ChatRoomDto findRoom(@Valid @RequestBody ChatRoomReqDto dto) throws Exception {
         ChatRoom privateRoom = chatRoomService.findPrivateRoom(dto);
         return ChatRoomDto.toDto(privateRoom);
     }
 
     @PostMapping("create")
-    public ChatRoomDto createRoom(@Valid @RequestBody ChatRoomReqDto dto) {
+    public ChatRoomDto createRoom(@Valid @RequestBody ChatRoomReqDto dto) throws Exception {
         ChatRoom room = chatRoomService.createPrivateRoom(dto);
         return ChatRoomDto.toDto(room);
     }

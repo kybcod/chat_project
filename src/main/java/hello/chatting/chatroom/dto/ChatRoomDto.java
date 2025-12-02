@@ -1,6 +1,7 @@
 package hello.chatting.chatroom.dto;
 
 import hello.chatting.chatroom.domain.ChatRoom;
+import hello.chatting.chatroom.domain.RoomType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ChatRoomDto {
     private Long id;             // BIGINT PK
-    private String type;         // PRIVATE / GROUP
+    private RoomType type;         // PRIVATE / GROUP
     private String roomName;     // 그룹방 이름, 1:1은 null
     private LocalDateTime createdAt;
 

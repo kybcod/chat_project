@@ -42,11 +42,7 @@ function openChatWith(friendLoginId) {
             friendId: friendLoginId
         }),
         success: function(room) {
-            if (room) {
-                enterRoom(room.id);
-            } else {
-                createPrivateRoom(friendLoginId);
-            }
+            enterRoom(room.id);
         },
         error: function(xhr) {
             let msg = xhr.responseJSON ? xhr.responseJSON.msg : xhr.responseText;
@@ -93,7 +89,6 @@ function enterRoom(room_id) {
 function messageOutput(roomId) {
 
     document.getElementById('chatBox').innerHTML = '';
-
 
     $.ajax({
         url: "/chat/messages/" + roomId,

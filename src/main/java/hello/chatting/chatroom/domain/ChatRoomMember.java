@@ -27,7 +27,8 @@ public class ChatRoomMember {
 
     @Column(length = 20)
     @Builder.Default
-    private String role = "MEMBER";
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.MEMBER;
 
     @Column(insertable = false, updatable = false)
     private LocalDateTime joinedAt;

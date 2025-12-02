@@ -2,6 +2,8 @@ package hello.chatting.chatroom.service;
 
 import hello.chatting.chatroom.domain.ChatRoom;
 import hello.chatting.chatroom.domain.ChatRoomMember;
+import hello.chatting.chatroom.domain.Role;
+import hello.chatting.chatroom.domain.RoomType;
 import hello.chatting.chatroom.dto.ChatRoomDto;
 import hello.chatting.chatroom.dto.ChatRoomReqDto;
 import hello.chatting.chatroom.repository.ChatRoomMemberRepository;
@@ -10,12 +12,14 @@ import hello.chatting.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
@@ -23,25 +27,26 @@ public class ChatRoomService {
     private final UserRepository userRepository;
 
     // 1:1 방 조회
-    public ChatRoom findPrivateRoom(ChatRoomReqDto dto) {
-        return chatRoomRepository.findPrivateRoom(dto.getUserId(), dto.getFriendId());
+    public ChatRoom findPrivateRoom(ChatRoomReqDto dto) throws Exception {
+        ChatRoom room = chatRoomRepository.findPrivateRoom(dto.getUserId(), dto.getFriendId(), RoomType.PRIVATE);
+
+        if (room == null) {
+            room = createPrivateRoom(dto);
+        }
+        return room;
     }
 
 
     // 1:1 방 생성
-    public ChatRoom createPrivateRoom(ChatRoomReqDto dto) {
+    @Transactional
+    public ChatRoom createPrivateRoom(ChatRoomReqDto dto) throws Exception {
 
         String friend = dto.getFriendId();
-        log.info("Create private room {}", friend);
-        String friendName = userRepository.findByLoginId(friend)
-                .orElseThrow(() -> new RuntimeException("사용자 없음: " + friend))
-                .getName();
-
 
         // ChatRoom 생성
         ChatRoom room = ChatRoom.builder()
-                .type("PRIVATE")
-                .roomName(friendName)
+                .type(RoomType.PRIVATE)
+                .roomName("")
                 .build();
         room = chatRoomRepository.save(room);
 
@@ -49,7 +54,7 @@ public class ChatRoomService {
         ChatRoomMember meMember = ChatRoomMember.builder()
                 .roomId(room.getId())
                 .userId(dto.getUserId())
-                .role("OWNER")
+                .role(Role.OWNER)
                 .build();
         chatRoomMemberRepository.save(meMember);
 

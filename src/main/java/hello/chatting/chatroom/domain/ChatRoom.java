@@ -1,10 +1,7 @@
 package hello.chatting.chatroom.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "chat_room")
+@ToString
 public class ChatRoom {
 
     @Id
@@ -21,7 +19,8 @@ public class ChatRoom {
     private Long id;             // BIGINT PK
 
     @Column(nullable = false)
-    private String type;         // PRIVATE / GROUP
+    @Enumerated(EnumType.STRING)
+    private RoomType type;         // PRIVATE / GROUP
 
     private String roomName;     // 그룹방 이름, 1:1은 null
 
