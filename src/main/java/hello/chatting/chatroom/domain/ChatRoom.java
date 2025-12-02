@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 @Entity
 @Table(name = "chat_room")
-@Builder(toBuilder = true)
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class ChatRoom {
 
     @Id

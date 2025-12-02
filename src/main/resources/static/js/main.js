@@ -53,8 +53,9 @@ function showFriendList() {
 
 function showChattingList(){
     $.ajax({
-        url: "/chatRoom",
+        url: "/chatRoom/list",
         type: "GET",
+        data: { userId: loginUser.loginId },
         success: function (chattingRooms) {
             const container = document.querySelector(".chatting-list");
             container.innerHTML = ""; // 초기화

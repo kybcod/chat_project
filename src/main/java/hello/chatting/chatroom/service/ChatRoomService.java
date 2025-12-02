@@ -2,6 +2,7 @@ package hello.chatting.chatroom.service;
 
 import hello.chatting.chatroom.domain.ChatRoom;
 import hello.chatting.chatroom.domain.ChatRoomMember;
+import hello.chatting.chatroom.dto.ChatRoomDto;
 import hello.chatting.chatroom.repository.ChatRoomMemberRepository;
 import hello.chatting.chatroom.repository.ChatRoomRepository;
 import hello.chatting.user.repository.UserRepository;
@@ -25,8 +26,7 @@ public class ChatRoomService {
 
 
     // 1:1 방 생성
-    public ChatRoom createPrivateRoom(String me, String friend) {
-
+    public ChatRoomDto createPrivateRoom(String me, String friend) {
 
         String friendName = userRepository.findByLoginId(friend)
                 .orElseThrow(() -> new RuntimeException("사용자 없음: " + friend))
@@ -55,11 +55,11 @@ public class ChatRoomService {
                 .build();
         chatRoomMemberRepository.save(friendMember);
 
-        return room;
+        return ChatRoomDto.toDto(room);
     }
 
-    public List<ChatRoom> findAll() {
-        return chatRoomRepository.findAll();
+    public List<ChatRoom> findAllByUserId(String userId) {
+        return chatRoomRepository.findAllByUserId(userId);
     }
 }
 

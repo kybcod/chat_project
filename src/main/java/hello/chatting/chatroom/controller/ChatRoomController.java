@@ -1,14 +1,14 @@
 package hello.chatting.chatroom.controller;
 
 import hello.chatting.chatroom.domain.ChatRoom;
+import hello.chatting.chatroom.dto.ChatRoomDto;
 import hello.chatting.chatroom.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,9 +18,11 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
 
-    @GetMapping
-    public List<ChatRoom> findAll() {
-        return chatRoomService.findAll();
+    @GetMapping("/list")
+    public List<ChatRoomDto> findAllByUserId(String userId) {
+        return chatRoomService.findAllByUserId(userId).stream()
+                .map(ChatRoomDto::toDto)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("find")
@@ -29,7 +31,7 @@ public class ChatRoomController {
     }
 
     @PostMapping("create")
-    public ChatRoom createRoom(String me, String friend) {
+    public ChatRoomDto createRoom(String me, String friend) {
         return chatRoomService.createPrivateRoom(me, friend);
     }
 

@@ -20,7 +20,7 @@ import java.util.List;
 public class ChatController {
 
     private final SimpMessageSendingOperations messagingTemplate;
-    private final ChatRepository chatRepository;
+    private final ChatService chatService;
 
     @MessageMapping("chat/message")
     public void message(ChatMessage message) {
@@ -30,7 +30,7 @@ public class ChatController {
                 .sender(message.getSender())
                 .message(message.getMessage())
                 .build();
-        chatRepository.save(chatMessage);
+        chatService.save(chatMessage);
 
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
@@ -38,7 +38,7 @@ public class ChatController {
     @GetMapping("/chat/messages/{roomId}")
     @ResponseBody
     public List<ChatMessage> getMessages(@PathVariable Long roomId) {
-        return chatRepository.findByRoomIdOrderByCreatedAt(roomId);
+        return chatService.findByRoomIdOrderByCreatedAt(roomId);
     }
 
 }
