@@ -12,7 +12,7 @@
     </div>
 
     <div class="chat-input-area">
-        <input type="text" id="messageInput" placeholder="메시지를 입력하세요">
+        <input type="text" id="messageInput" placeholder="메시지를 입력하세요" onkeydown="handleEnter(event)">
         <button onclick="sendMessage()">전송</button>
     </div>
 </div>

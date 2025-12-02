@@ -2,6 +2,13 @@ var roomId= null;
 var stompClient = null;
 var subscription = null;
 
+function handleEnter(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        sendMessage();
+    }
+}
+
 function sendMessage() {
 
     var msgInput = document.getElementById('messageInput');
