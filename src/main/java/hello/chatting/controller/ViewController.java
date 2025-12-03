@@ -1,4 +1,4 @@
-package hello.chatting.view;
+package hello.chatting.controller;
 
 import hello.chatting.user.service.UserService;
 import lombok.RequiredArgsConstructor;

@@ -26,6 +26,11 @@ spring:
       hibernate:
         format_sql: false
 
-
 server:
   port: 8087
+  error:
+    path: /error
+    include-exception: true
+    include-stacktrace: always
+    whitelabel:
+      enabled: false
