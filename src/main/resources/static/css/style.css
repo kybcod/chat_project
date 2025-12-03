@@ -56,7 +56,7 @@ main#main-content {flex: 1;background-color: #343541;color: #fff;padding: 20px;o
 .friends-profile-img {width: 32px;height: 32px;border-radius: 50%;object-fit: cover;margin-right: 10px;}
 
 /* 채팅 전체 컨테이너 */
-.chat-container {display: flex;flex-direction: column;height: 100%; /* 부모 height 기준으로 꽉 차게 */gap: 10px;}
+.chat-container {display: flex;flex-direction: column;height: 100%;gap: 10px;scrollbar-width: thin;scrollbar-color: #555 #222;}
 /* 채팅박스 */
 .chat-box {flex: 1;background-color: #1e1f23;border-radius: 10px;padding: 15px;height: 400px;overflow-y: auto;display: flex;flex-direction: column;gap: 10px;margin-bottom: 10px;color: #fff;font-size: 14px;}
 /* 메시지 공통 */
