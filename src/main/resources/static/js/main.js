@@ -2,12 +2,11 @@ function connect() {
     var socket = new SockJS('/ws-stomp');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function(frame) {
-        console.log('Connected: ' + frame);
 
         // 알림 수신
         stompClient.subscribe("/user/queue/alarm", function(message) {
             const alarm = JSON.parse(message.body);
-            showAlarm(alarm.content);
+            toastAlert(alarm);
         });
     });
 }
@@ -18,7 +17,6 @@ connect();
 // 알람 기능
 function sendAlarmToUser(roomId, content) {
 
-    // ajax roomid 로 호출해서
     $.ajax({
         url: `/chatRoom/findRoom`,
         type: "GET",
@@ -26,11 +24,11 @@ function sendAlarmToUser(roomId, content) {
                 roomId: roomId,
         },
         success: function(room) {
-            console.log("roomroom", room);
-
             const alarmMessage = {
                 receiver: room.userId,
-                content: content
+                content: content,
+                senderName : loginUser.name,
+                senderProfileImage : loginUser.profileImage
             };
             stompClient.send("/pub/alarm", {}, JSON.stringify(alarmMessage));
         },
@@ -113,15 +111,4 @@ function showChattingList(){
     });
 
 
-}
-
-function showAlarm(content) {
-    alert("알림: " + content);
-
-    const alarmDiv = document.createElement("div");
-    alarmDiv.classList.add("alarm-toast");
-    alarmDiv.textContent = content;
-    document.body.appendChild(alarmDiv);
-
-    setTimeout(() => alarmDiv.remove(), 3000); // 3초 후 사라짐
 }

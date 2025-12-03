@@ -8,10 +8,36 @@
 let basicAlert = null;
 let confirmAlert = null;
 let inputAlert = null;
+let toastAlert = null;
 
 let researchFlag = false;
 
 $(function() {
+
+	const Toast = Swal.mixin({
+		toast: true,
+		position: 'bottom-end',
+		showConfirmButton: false,
+		timer: 3000,
+		timerProgressBar: true,
+		didOpen: (toast) => {
+			toast.addEventListener('mouseenter', Swal.stopTimer)
+			toast.addEventListener('mouseleave', Swal.resumeTimer)
+		}
+	});
+
+	toastAlert = (alarm) => {
+		Toast.fire({
+			title: alarm.senderName,
+			html: `
+            <div style="display:flex; align-items:center; gap:10px;">
+                <img src="${alarm.senderProfileImage}" 
+                     style="width:35px; height:35px; border-radius:50%;">
+                <div>${alarm.content}</div>
+            </div>
+        `
+		});
+	}
 
 	basicAlert = (data) => {
 		// alert 호출 후 focus가 된 element가 담길 변수.

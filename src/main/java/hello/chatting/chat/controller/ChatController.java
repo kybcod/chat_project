@@ -27,7 +27,9 @@ public class ChatController {
 
     @MessageMapping("/alarm")
     public void sendAlarm(AlarmMessageDto alarmMessageDto) {
-        messagingTemplate.convertAndSendToUser(alarmMessageDto.getReceiver(), "/queue/alarm", alarmMessageDto);
+        messagingTemplate.convertAndSendToUser(alarmMessageDto.getReceiver(),
+                "/queue/alarm",
+                        alarmMessageDto);
     }
 
     @MessageMapping("chat/message")
