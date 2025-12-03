@@ -1,5 +1,6 @@
 package hello.chatting.chatroom.service;
 
+import hello.chatting.chat.dto.ChatMessageDto;
 import hello.chatting.chatroom.domain.ChatRoom;
 import hello.chatting.chatroom.domain.ChatRoomMember;
 import hello.chatting.chatroom.domain.Role;
@@ -78,6 +79,10 @@ public class ChatRoomService {
 
     public List<ChatRoom> findAllByUserId(String userId) {
         return chatRoomRepository.findAllByUserId(userId);
+    }
+
+    public ChatRoomMember findByRoomIdAndUserIdNot(ChatRoomReqDto dto) {
+        return chatRoomMemberRepository.findByRoomIdAndUserIdNot(dto.getRoomId(), dto.getUserId());
     }
 }
 

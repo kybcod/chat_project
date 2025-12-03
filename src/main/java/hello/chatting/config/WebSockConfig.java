@@ -12,7 +12,7 @@ public class WebSockConfig  implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/sub"); // 구독 : /sub → 서버 → 클라이언트
+        config.enableSimpleBroker("/sub", "/queue"); // 구독 : /sub → 서버 → 클라이언트
         config.setApplicationDestinationPrefixes("/pub"); // /pub → 클라이언트 → 서버
     }
 

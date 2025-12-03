@@ -1,7 +1,9 @@
 package hello.chatting.chatroom.repository;
 
 import hello.chatting.chatroom.domain.ChatRoom;
+import hello.chatting.chatroom.domain.ChatRoomMember;
 import hello.chatting.chatroom.domain.RoomType;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,5 +33,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
         ORDER BY COALESCE(MAX(cm.createdAt), '1970-01-01T00:00:00') DESC
     """)
     List<ChatRoom> findAllByUserId(String userId);
+
+
 }
 

@@ -9,7 +9,13 @@ function handleEnter(event) {
     }
 }
 
+// 메세지 전송
 function sendMessage() {
+
+    if (!roomId){
+        basicAlert({ icon: 'error', text: "친구 또는 채팅을 선택하세요." });
+        return;
+    }
 
     var msgInput = $('#messageInput').val().trim();
     var message = {
@@ -19,15 +25,12 @@ function sendMessage() {
         message: msgInput
     };
 
-    if (!roomId){
-        basicAlert({ icon: 'error', text: "친구 또는 채팅을 선택하세요." });
-        return;
-    }
 
     stompClient.send("/pub/chat/message", {}, JSON.stringify(message));
     $('#messageInput').val("");
 
     showChattingList();
+    sendAlarmToUser(roomId, msgInput)
 
 }
 

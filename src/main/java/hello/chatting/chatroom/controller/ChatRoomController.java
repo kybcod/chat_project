@@ -1,7 +1,9 @@
 package hello.chatting.chatroom.controller;
 
 import hello.chatting.chatroom.domain.ChatRoom;
+import hello.chatting.chatroom.domain.ChatRoomMember;
 import hello.chatting.chatroom.dto.ChatRoomDto;
+import hello.chatting.chatroom.dto.ChatRoomMemberDto;
 import hello.chatting.chatroom.dto.ChatRoomReqDto;
 import hello.chatting.chatroom.service.ChatRoomService;
 import jakarta.validation.Valid;
@@ -27,16 +29,22 @@ public class ChatRoomController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("find")
+    @PostMapping("/find")
     public ChatRoomDto findRoom(@Valid @RequestBody ChatRoomReqDto dto) throws Exception {
         ChatRoom privateRoom = chatRoomService.findPrivateRoom(dto);
         return ChatRoomDto.toDto(privateRoom, dto.getUserId());
     }
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public ChatRoomDto createRoom(@Valid @RequestBody ChatRoomReqDto dto) throws Exception {
         ChatRoom room = chatRoomService.createPrivateRoom(dto);
         return ChatRoomDto.toDto(room, dto.getUserId());
     }
 
+    @GetMapping("/findRoom")
+    public ChatRoomMemberDto getRoomInfo(ChatRoomReqDto dto) {
+        ChatRoomMember userIdNot = chatRoomService.findByRoomIdAndUserIdNot(dto);
+        log.info("userIdNot:{}", userIdNot);
+        return ChatRoomMemberDto.toDto(userIdNot);
+    }
 }

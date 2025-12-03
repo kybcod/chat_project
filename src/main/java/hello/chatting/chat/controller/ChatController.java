@@ -1,6 +1,7 @@
 package hello.chatting.chat.controller;
 
 import hello.chatting.chat.domain.ChatMessage;
+import hello.chatting.chat.dto.AlarmMessageDto;
 import hello.chatting.chat.dto.ChatMessageDto;
 import hello.chatting.chat.repository.ChatRepository;
 import hello.chatting.chat.service.ChatService;
@@ -23,6 +24,11 @@ public class ChatController {
 
     private final SimpMessageSendingOperations messagingTemplate;
     private final ChatService chatService;
+
+    @MessageMapping("/alarm")
+    public void sendAlarm(AlarmMessageDto alarmMessageDto) {
+        messagingTemplate.convertAndSendToUser(alarmMessageDto.getReceiver(), "/queue/alarm", alarmMessageDto);
+    }
 
     @MessageMapping("chat/message")
     public void message(ChatMessageDto message) {

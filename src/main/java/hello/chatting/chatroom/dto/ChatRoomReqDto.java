@@ -18,4 +18,6 @@ public class ChatRoomReqDto {
 
     @NotNull(message = "친구 아이디")
     private String friendId;
+
+    private Long roomId;
 }
