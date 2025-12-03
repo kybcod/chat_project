@@ -11,38 +11,40 @@ function handleEnter(event) {
 
 function sendMessage() {
 
-    var msgInput = document.getElementById('messageInput');
+    var msgInput = $('#messageInput').val().trim();
     var message = {
         type: 'TALK',
         roomId: roomId,
         sender: loginUser.loginId,
-        message: msgInput.value
+        message: msgInput
     };
 
+    if (!roomId){
+        basicAlert({ icon: 'error', text: "친구 또는 채팅을 선택하세요." });
+        return;
+    }
+
     stompClient.send("/pub/chat/message", {}, JSON.stringify(message));
-    msgInput.value = '';
+    $('#messageInput').val("");
 
     showChattingList();
 
 }
 
 function showMessage(message) {
-    var chatBox = document.getElementById('chatBox');
-    var msgDiv = document.createElement('div');
-    msgDiv.classList.add('chat-message');
+    var msgDiv = $('<div>').addClass('chat-message');
+    msgDiv.addClass(message.sender === loginUser.loginId ? 'self' : 'other');
+    msgDiv.text(message.message);
 
-    if(message.sender === loginUser.loginId) {
-        msgDiv.classList.add('self'); // 내 메시지
-    } else {
-        msgDiv.classList.add('other'); // 상대 메시지
-    }
-
-    msgDiv.textContent = message.message;
-    chatBox.appendChild(msgDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    $('#chatBox').append(msgDiv);
+    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
 }
 
 function openChatWith(friendLoginId) {
+    $('#chatPlaceholder').hide();
+    $('#chat-input-area').show();
+    $('#chatBox').show();
+
     $.ajax({
         url: "/chatRoom/find",
         type: "POST",
@@ -63,6 +65,12 @@ function openChatWith(friendLoginId) {
 }
 
 function createPrivateRoom(friendLoginId) {
+
+    $('#chatPlaceholder').hide();
+    $('#chat-input-area').show();
+    $('#chatBox').show();
+
+
     $.ajax({
         url: "/chatRoom/create",
         type: "POST",
@@ -81,6 +89,11 @@ function createPrivateRoom(friendLoginId) {
 }
 
 function enterRoom(room_id) {
+
+    $('#chatPlaceholder').hide();
+    $('#chat-input-area').show();
+    $('#chatBox').show();
+
     roomId = room_id;
 
     // 이전 구독 해제
@@ -100,7 +113,7 @@ function enterRoom(room_id) {
 
 function messageOutput(roomId) {
 
-    document.getElementById('chatBox').innerHTML = '';
+    $('#chatBox').empty();
 
     $.ajax({
         url: "/chat/messages/" + roomId,

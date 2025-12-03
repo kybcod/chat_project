@@ -7,11 +7,18 @@
 <body>
 
 <div th:fragment="chatting" class="chat-container">
-    <div id="chatBox" class="chat-box">
+
+    <!-- 초기 안내 메시지 -->
+    <div id="chatPlaceholder" class="chat-box">
+        친구 또는 채팅을 선택해서 채팅을 시작하세요.
+    </div>
+
+    <!-- 실제 채팅 박스 (초기에는 숨김) -->
+    <div id="chatBox" class="chat-box" style="display:none;">
         <!-- 메시지들이 여기 들어감 -->
     </div>
 
-    <div class="chat-input-area">
+    <div id="chat-input-area" class="chat-input-area" style="display:none;">
         <input type="text" id="messageInput" placeholder="메시지를 입력하세요" onkeydown="handleEnter(event)">
         <button onclick="sendMessage()">전송</button>
     </div>
