@@ -23,6 +23,7 @@ function sendMessage() {
     msgInput.value = '';
 
     showChattingList();
+
 }
 
 function showMessage(message) {
@@ -90,6 +91,8 @@ function enterRoom(room_id) {
     // 새로운 구독
     subscription = stompClient.subscribe("/sub/chat/room/" + roomId, function(messageOutput) {
         showMessage(JSON.parse(messageOutput.body));
+
+        showChattingList();
     });
 
     messageOutput(roomId)
