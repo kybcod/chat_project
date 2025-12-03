@@ -6,6 +6,12 @@ function connect() {
         // 알림 수신
         stompClient.subscribe("/user/queue/alarm", function(message) {
             const alarm = JSON.parse(message.body);
+
+            // 해당 유저가 해당 채팅방에 들어가 있다면 알림X
+            if(roomId === alarm.roomId) {
+                return;
+            }
+
             toastAlert(alarm);
         });
     });
@@ -28,7 +34,8 @@ function sendAlarmToUser(roomId, content) {
                 receiver: room.userId,
                 content: content,
                 senderName : loginUser.name,
-                senderProfileImage : loginUser.profileImage
+                senderProfileImage : loginUser.profileImage,
+                roomId: roomId,
             };
             stompClient.send("/pub/alarm", {}, JSON.stringify(alarmMessage));
         },

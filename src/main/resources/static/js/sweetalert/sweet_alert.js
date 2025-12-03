@@ -30,7 +30,7 @@ $(function() {
 		Toast.fire({
 			title: alarm.senderName,
 			html: `
-            <div style="display:flex; align-items:center; gap:10px;">
+            <div style="display:flex; align-items:center; gap:10px;" onclick="enterRoom(${alarm.roomId})">
                 <img src="${alarm.senderProfileImage}" 
                      style="width:35px; height:35px; border-radius:50%;">
                 <div>${alarm.content}</div>
