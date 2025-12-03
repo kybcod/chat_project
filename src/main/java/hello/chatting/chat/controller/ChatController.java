@@ -3,7 +3,6 @@ package hello.chatting.chat.controller;
 import hello.chatting.chat.domain.ChatMessage;
 import hello.chatting.chat.dto.AlarmMessageDto;
 import hello.chatting.chat.dto.ChatMessageDto;
-import hello.chatting.chat.repository.ChatRepository;
 import hello.chatting.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

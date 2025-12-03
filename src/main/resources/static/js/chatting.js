@@ -1,6 +1,4 @@
 var roomId= null;
-var stompClient = null;
-var subscription = null;
 
 function handleEnter(event) {
     if (event.key === 'Enter') {
@@ -100,12 +98,12 @@ function enterRoom(room_id) {
     roomId = room_id;
 
     // 이전 구독 해제
-    if(subscription) {
-        subscription.unsubscribe();
+    if(chatSubscription) {
+        chatSubscription.unsubscribe();
     }
 
     // 새로운 구독
-    subscription = stompClient.subscribe("/sub/chat/room/" + roomId, function(messageOutput) {
+    chatSubscription = stompClient.subscribe("/sub/chat/room/" + roomId, function(messageOutput) {
         showMessage(JSON.parse(messageOutput.body));
 
         showChattingList();

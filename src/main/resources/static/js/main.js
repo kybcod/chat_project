@@ -1,17 +1,16 @@
+var stompClient = null;
+var chatSubscription = null;
+var alarmSubscription = null;
+
 function connect() {
     var socket = new SockJS('/ws-stomp');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function(frame) {
-
         // 알림 수신
-        stompClient.subscribe("/user/queue/alarm", function(message) {
+        alarmSubscription = stompClient.subscribe("/user/queue/alarm", function(message) {
             const alarm = JSON.parse(message.body);
-
             // 해당 유저가 해당 채팅방에 들어가 있다면 알림X
-            if(roomId === alarm.roomId) {
-                return;
-            }
-
+            if(roomId === alarm.roomId) return;
             toastAlert(alarm);
         });
     });
@@ -37,6 +36,7 @@ function sendAlarmToUser(roomId, content) {
                 senderProfileImage : loginUser.profileImage,
                 roomId: roomId,
             };
+
             stompClient.send("/pub/alarm", {}, JSON.stringify(alarmMessage));
         },
         error: function(xhr) {
