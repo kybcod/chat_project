@@ -6,6 +6,7 @@ import hello.chatting.chatroom.dto.ChatRoomDto;
 import hello.chatting.chatroom.dto.ChatRoomMemberDto;
 import hello.chatting.chatroom.dto.ChatRoomReqDto;
 import hello.chatting.chatroom.service.ChatRoomService;
+import hello.chatting.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,30 +22,38 @@ import java.util.stream.Collectors;
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
+    private final UserService userService;
 
     @GetMapping("/list")
     public List<ChatRoomDto> findAllByUserId(ChatRoomReqDto dto) {
         return chatRoomService.findAllByUserId(dto.getUserId()).stream()
-                .map(chatRoom -> ChatRoomDto.toDto(chatRoom, dto.getUserId()))  // 친구 이름만 반환
+                .map(chatRoom -> {
+                    String friendName = userService.extractFriendName(
+                            chatRoom.getRoomName(),
+                            dto.getUserId()
+                    );
+                    return ChatRoomDto.toDto(chatRoom, friendName);
+                })
                 .collect(Collectors.toList());
     }
 
     @PostMapping("/find")
     public ChatRoomDto findRoom(@Valid @RequestBody ChatRoomReqDto dto) throws Exception {
         ChatRoom privateRoom = chatRoomService.findPrivateRoom(dto);
-        return ChatRoomDto.toDto(privateRoom, dto.getUserId());
+        String friendName = chatRoomService.getFriendName(privateRoom, dto.getUserId());
+        return ChatRoomDto.toDto(privateRoom, friendName);
     }
 
     @PostMapping("/create")
     public ChatRoomDto createRoom(@Valid @RequestBody ChatRoomReqDto dto) throws Exception {
         ChatRoom room = chatRoomService.createPrivateRoom(dto);
-        return ChatRoomDto.toDto(room, dto.getUserId());
+        String friendName = chatRoomService.getFriendName(room, dto.getUserId());
+        return ChatRoomDto.toDto(room, friendName);
     }
 
     @GetMapping("/findRoom")
     public ChatRoomMemberDto getRoomInfo(ChatRoomReqDto dto) {
         ChatRoomMember userIdNot = chatRoomService.findByRoomIdAndUserIdNot(dto);
-        log.info("userIdNot:{}", userIdNot);
         return ChatRoomMemberDto.toDto(userIdNot);
     }
 }

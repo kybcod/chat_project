@@ -10,6 +10,8 @@ import hello.chatting.chatroom.dto.ChatRoomReqDto;
 import hello.chatting.chatroom.repository.ChatRoomMemberRepository;
 import hello.chatting.chatroom.repository.ChatRoomRepository;
 import hello.chatting.user.repository.UserRepository;
+import hello.chatting.user.service.UserService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomMemberRepository chatRoomMemberRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     // 1:1 방 조회
     public ChatRoom findPrivateRoom(ChatRoomReqDto dto) throws Exception {
@@ -83,6 +86,10 @@ public class ChatRoomService {
 
     public ChatRoomMember findByRoomIdAndUserIdNot(ChatRoomReqDto dto) {
         return chatRoomMemberRepository.findByRoomIdAndUserIdNot(dto.getRoomId(), dto.getUserId());
+    }
+
+    public String getFriendName(ChatRoom chatRoom, String userId) {
+        return userService.extractFriendName(chatRoom.getRoomName(), userId);
     }
 }
 
