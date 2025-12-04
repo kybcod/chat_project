@@ -3,7 +3,7 @@ var roomId= null;
 $(document).ready(function() {
     const messageInput = $('#messageInput');
 
-    if (messageInput.length) { // Check if element exists
+    if (messageInput.length) {
         messageInput.on('keydown', function(event) {
             if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey) {
                 event.preventDefault();
@@ -13,12 +13,25 @@ $(document).ready(function() {
 
         messageInput.on('input', function() {
             this.style.height = 'auto';
+
             let scrollHeight = this.scrollHeight;
-            this.style.height = (scrollHeight) + 'px';
+            this.style.height = scrollHeight + 'px';
+
+            // 4줄 기준: line-height * 4 = 1.5 * 4 = 6em 정도 → px로 계산됨
+            const lineHeight = parseFloat($(this).css('line-height'));
+            const heightLimit = lineHeight * 4;
+
+            if (scrollHeight > heightLimit) {
+                $(this).css('overflow-y', 'auto');
+            } else {
+                $(this).css('overflow-y', 'hidden');
+            }
+
             $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
         });
     }
 });
+
 
 // 메세지 전송
 function sendMessage() {
@@ -90,6 +103,9 @@ function showMessage(message) {
                 .css({ maxWidth: '200px', cursor: 'pointer', backgroundColor: 'white' })
                 .on('click', function() {
                     window.open(message.fileUrl, '_blank');
+                })
+                .on('load', function () {
+                    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
                 });
             contentDiv.append(img);
         } else {
@@ -184,6 +200,7 @@ function enterRoom(room_id) {
     });
 
     messageOutput(roomId)
+
 }
 
 function messageOutput(roomId) {
