@@ -25,7 +25,7 @@ public class ChatRoomController {
     private final UserService userService;
 
     @GetMapping("/list")
-    public List<ChatRoomDto> findAllByUserId(ChatRoomReqDto dto) {
+    public List<ChatRoomDto> findAllByUserId(ChatRoomReqDto dto) throws Exception {
         return chatRoomService.findAllByUserId(dto.getUserId()).stream()
                 .map(chatRoom -> {
                     String friendName = userService.extractFriendName(

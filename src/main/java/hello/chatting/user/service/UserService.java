@@ -15,8 +15,12 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findAll() throws Exception {
+        List<User> userList = userRepository.findAll();
+        if (userList.isEmpty() || userList == null) {
+            throw new Exception("친구 목록 불러오기를 실패했습니다.");
+        }
+        return userList;
     }
 
 

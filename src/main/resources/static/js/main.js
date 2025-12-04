@@ -63,13 +63,13 @@ function showFriendList() {
                 const div = document.createElement("div");
                 div.classList.add("friends-item");
 
-                // 🔹 프로필 이미지
+                // 프로필 이미지
                 const img = document.createElement("img");
                 img.src = fri.profileImage || "/images/orgProfile.png";
                 img.alt = fri.name;
                 img.classList.add("friends-profile-img");
 
-                // 🔹 이름
+                // 이름
                 const nameSpan = document.createElement("span");
                 nameSpan.textContent = fri.name;
                 nameSpan.classList.add("friends-name");

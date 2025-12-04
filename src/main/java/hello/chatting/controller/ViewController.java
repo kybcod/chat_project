@@ -25,7 +25,7 @@ public class ViewController {
     }
 
     @GetMapping("/userList")
-    public String userList(Model model) {
+    public String userList(Model model) throws Exception {
         model.addAttribute("users", userService.findAll());
         return "user/userList";
     }

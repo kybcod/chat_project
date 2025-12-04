@@ -77,11 +77,19 @@ public class ChatRoomService {
                 .build();
         chatRoomMemberRepository.save(friendMember);
 
+        if (room == null){
+            throw new Exception("해닫 채팅방을 찾을 수 없습니다.");
+        }
+
         return room;
     }
 
-    public List<ChatRoom> findAllByUserId(String userId) {
-        return chatRoomRepository.findAllByUserId(userId);
+    public List<ChatRoom> findAllByUserId(String userId) throws Exception {
+        List<ChatRoom> allByUserId = chatRoomRepository.findAllByUserId(userId);
+        if (allByUserId == null) {
+            throw new Exception("채팅 리스트를 불러오기를 실패했습니다.");
+        }
+        return allByUserId;
     }
 
     public ChatRoomMember findByRoomIdAndUserIdNot(ChatRoomReqDto dto) {
