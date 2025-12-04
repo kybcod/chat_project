@@ -17,8 +17,6 @@ function connect() {
 }
 
 
-connect();
-
 // 알람 기능
 function sendAlarmToUser(roomId, content) {
 
