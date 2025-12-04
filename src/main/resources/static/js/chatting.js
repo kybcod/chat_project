@@ -1,35 +1,33 @@
 var roomId= null;
 
 $(document).ready(function() {
-    const messageInput = $('#messageInput');
 
-    if (messageInput.length) {
-        messageInput.on('keydown', function(event) {
-            if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey) {
-                event.preventDefault();
-                sendMessage();
-            }
-        });
+    $(document).on('keydown', '#messageInput', function(event) {
+        if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey) {
+            event.preventDefault();
+            sendMessage();
+        }
+    });
 
-        messageInput.on('input', function() {
-            this.style.height = 'auto';
+    // 입력 이벤트: 자동 높이 조절 + 스크롤
+    $(document).on('input', '#messageInput', function() {
+        // 자동 높이 조절
+        this.style.height = 'auto';
+        const scrollHeight = this.scrollHeight;
+        this.style.height = scrollHeight + 'px';
 
-            let scrollHeight = this.scrollHeight;
-            this.style.height = scrollHeight + 'px';
+        const lineHeight = parseFloat($(this).css('line-height'));
+        const heightLimit = lineHeight * 4; // 4줄 기준
 
-            // 4줄 기준: line-height * 4 = 1.5 * 4 = 6em 정도 → px로 계산됨
-            const lineHeight = parseFloat($(this).css('line-height'));
-            const heightLimit = lineHeight * 4;
+        if (scrollHeight > heightLimit) {
+            $(this).css('overflow-y', 'auto');
+        } else {
+            $(this).css('overflow-y', 'hidden');
+        }
 
-            if (scrollHeight > heightLimit) {
-                $(this).css('overflow-y', 'auto');
-            } else {
-                $(this).css('overflow-y', 'hidden');
-            }
-
-            $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
-        });
-    }
+        // 채팅박스 스크롤
+        $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+    });
 });
 
 
