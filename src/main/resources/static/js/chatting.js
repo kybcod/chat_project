@@ -41,6 +41,10 @@ function sendMessage() {
         return;
     }
 
+    if ($('#messageInput').val() === ""){
+        return;
+    }
+
     var msgInput = $('#messageInput').val().trim();
     var message = {
         type: 'TALK',
