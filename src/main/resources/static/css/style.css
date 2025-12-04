@@ -60,7 +60,7 @@ main#main-content {flex: 1;background-color: #343541;color: #fff;padding: 20px;o
 /* 채팅박스 */
 .chat-box {flex: 1;background-color: #1e1f23;border-radius: 10px;padding: 15px;height: 400px;overflow-y: auto;display: flex;flex-direction: column;gap: 10px;margin-bottom: 10px;color: #fff;font-size: 14px;}
 /* 메시지 공통 */
-.chat-message {max-width: 70%;padding: 10px 15px;border-radius: 15px;word-wrap: break-word;line-height: 1.4;}
+.chat-message {max-width: 70%;padding: 10px 15px;border-radius: 15px;word-wrap: break-word;line-height: 1.4;white-space: pre-wrap;}
 /* 이미지 메시지 */
 .chat-message img {max-width: 200px;max-height: 200px;border-radius: 10px;display: block;margin-top: 5px;}
 /* 내 이미지 메시지 */
@@ -73,10 +73,10 @@ main#main-content {flex: 1;background-color: #343541;color: #fff;padding: 20px;o
 /* 상대 메시지 스타일 */
 .chat-message.other {align-self: flex-start;background-color: #2c2d30;color: #fff;border-bottom-left-radius: 0;}
 /* 입력 영역 */
-.chat-input-area {display: flex;gap: 10px;}
-.chat-input-area input {flex: 1;padding: 10px 15px;border-radius: 20px;border: 1px solid #555;background-color: #2c2d30;color: #fff;outline: none;}
-.chat-input-area input::placeholder {color: #888;}
-.chat-input-area button {padding: 10px 20px;border-radius: 20px;border: none;background-color: #4e92ff;color: #fff;cursor: pointer;transition: all 0.2s;}
+.chat-input-area {display: flex;gap: 10px; align-items: flex-start;}
+.chat-input-area textarea {flex: 1;padding: 10px 15px;border-radius: 20px;border: 1px solid #555;background-color: #2c2d30;color: #fff;outline: none;resize: none;overflow-y: auto;line-height: 1.5; max-height: 120px; /* Approx 4-5 lines */}
+.chat-input-area textarea::placeholder {color: #888;}
+.chat-input-area button {padding: 10px 20px;border-radius: 20px;border: none;background-color: #4e92ff;color: #fff;cursor: pointer;transition: all 0.2s; align-self: flex-end;}
 .chat-input-area button:hover {background-color: #3673d6;}
 
 #chatPlaceholder {justify-content: center;align-items: center;font-size: xx-large;}

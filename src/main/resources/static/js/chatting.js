@@ -1,11 +1,24 @@
 var roomId= null;
 
-function handleEnter(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        sendMessage();
+$(document).ready(function() {
+    const messageInput = $('#messageInput');
+
+    if (messageInput.length) { // Check if element exists
+        messageInput.on('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        messageInput.on('input', function() {
+            this.style.height = 'auto';
+            let scrollHeight = this.scrollHeight;
+            this.style.height = (scrollHeight) + 'px';
+            $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+        });
     }
-}
+});
 
 // 메세지 전송
 function sendMessage() {
@@ -26,7 +39,7 @@ function sendMessage() {
 
     stompClient.send("/pub/chat/message", {}, JSON.stringify(message));
     $('#messageInput').val("");
-
+    $('#messageInput').css('height', '46px');
     showChattingList();
     sendAlarmToUser(roomId, msgInput)
 
