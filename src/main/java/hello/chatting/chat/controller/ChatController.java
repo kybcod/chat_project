@@ -6,12 +6,12 @@ import hello.chatting.chat.dto.ChatMessageDto;
 import hello.chatting.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +45,15 @@ public class ChatController {
                 .stream()
                 .map(ChatMessageDto::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/chat/upload")
+    @ResponseBody
+    public ResponseEntity<?> upload(@RequestParam("chatFile") MultipartFile chatFile,
+                                    @RequestParam("roomId") Long roomId,
+                                    @RequestParam("sender") String sender) throws Exception {
+        ChatMessage chatMessage = chatService.chatFileUpload(chatFile, roomId, sender);
+        return ResponseEntity.ok(ChatMessageDto.toDto(chatMessage));
     }
 
 }

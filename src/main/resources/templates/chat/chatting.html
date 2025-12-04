@@ -19,6 +19,10 @@
     </div>
 
     <div id="chat-input-area" class="chat-input-area" style="display:none;">
+        <input type="file" id="fileInput" style="display: none;" onchange="handleFileUpload(event)">
+        <label for="fileInput" class="file-upload-btn">
+            <img src="/images/plus.png" />
+        </label>
         <input type="text" id="messageInput" placeholder="메시지를 입력하세요" onkeydown="handleEnter(event)">
         <button onclick="sendMessage()">전송</button>
     </div>

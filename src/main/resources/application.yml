@@ -34,3 +34,7 @@ server:
     include-stacktrace: always
     whitelabel:
       enabled: false
+
+file:
+  upload:
+    path: ./uploads

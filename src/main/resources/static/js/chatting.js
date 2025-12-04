@@ -32,14 +32,75 @@ function sendMessage() {
 
 }
 
-function showMessage(message) {
-    var msgDiv = $('<div>').addClass('chat-message');
-    msgDiv.addClass(message.sender === loginUser.loginId ? 'self' : 'other');
-    msgDiv.text(message.message);
+// 파일 전송
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
+    const formData = new FormData();
+    formData.append("chatFile", file);
+    formData.append("roomId", roomId);
+    formData.append("sender", loginUser.loginId);
+
+    $.ajax({
+        url: '/chat/upload',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(messageDto) {
+            // WebSocket 전송
+            stompClient.send("/pub/chat/message", {}, JSON.stringify(messageDto));
+        },
+        error: function(err) {
+            basicAlert({ icon: 'error', text: err.responseJSON?.msg || err.responseText });
+        }
+    });
+
+    event.target.value = ""; // 초기화
+}
+
+
+function showMessage(message) {
+    let msgDiv = $('<div>').addClass('chat-message');
+    msgDiv.addClass(message.sender === loginUser.loginId ? 'self' : 'other');
+
+    // 메시지 내용
+    let contentDiv = $('<div>').addClass('msg-content');
+
+    if (message.fileUrl) {
+        if (message.fileType && message.fileType.startsWith('image/')) {
+            // 이미지 파일이면 미리보기
+            let img = $('<img>')
+                .attr('src', message.fileUrl)
+                .addClass('chat-image')
+                .css({ maxWidth: '200px', cursor: 'pointer', backgroundColor: 'white' })
+                .on('click', function() {
+                    window.open(message.fileUrl, '_blank');
+                });
+            contentDiv.append(img);
+        } else {
+            // 이미지 외 파일은 다운로드 링크
+            let link = $('<a>')
+                .attr('href', message.fileUrl)
+                .attr('target', '_blank')
+                .text(message.fileName || '파일 다운로드')
+                .addClass('file-link');
+            contentDiv.append(link);
+        }
+    } else {
+        // 일반 텍스트 메시지
+        contentDiv.text(message.message);
+    }
+
+    msgDiv.append(contentDiv);
+
+    // 채팅박스에 추가 후 스크롤
     $('#chatBox').append(msgDiv);
     $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
 }
+
+
 
 function openChatWith(friendLoginId) {
     $('#chatPlaceholder').hide();

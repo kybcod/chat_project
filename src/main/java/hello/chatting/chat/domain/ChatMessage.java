@@ -22,7 +22,11 @@ public class ChatMessage {
 
     @Column(nullable = false)
     private String sender;
+
     private String message;
+    private String fileUrl;
+    private String fileName;
+    private String fileType;
 
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;

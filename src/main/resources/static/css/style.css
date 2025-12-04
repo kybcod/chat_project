@@ -61,6 +61,13 @@ main#main-content {flex: 1;background-color: #343541;color: #fff;padding: 20px;o
 .chat-box {flex: 1;background-color: #1e1f23;border-radius: 10px;padding: 15px;height: 400px;overflow-y: auto;display: flex;flex-direction: column;gap: 10px;margin-bottom: 10px;color: #fff;font-size: 14px;}
 /* 메시지 공통 */
 .chat-message {max-width: 70%;padding: 10px 15px;border-radius: 15px;word-wrap: break-word;line-height: 1.4;}
+/* 이미지 메시지 */
+.chat-message img {max-width: 200px;max-height: 200px;border-radius: 10px;display: block;margin-top: 5px;}
+/* 내 이미지 메시지 */
+.chat-message.self img {border-bottom-right-radius: 0;}
+.chat-message.other img {border-bottom-left-radius: 0;}
+.file-link {color: white;transition: color 0.2s;}
+.file-link:hover {color: #007bff;cursor: pointer;}
 /* 내 메시지 스타일 */
 .chat-message.self {align-self: flex-end;background-color: #4e92ff;color: #fff;border-bottom-right-radius: 0;}
 /* 상대 메시지 스타일 */
@@ -73,3 +80,5 @@ main#main-content {flex: 1;background-color: #343541;color: #fff;padding: 20px;o
 .chat-input-area button:hover {background-color: #3673d6;}
 
 #chatPlaceholder {justify-content: center;align-items: center;font-size: xx-large;}
+.file-upload-btn {display: inline-block;width: 30px;height: 30px;cursor: pointer;padding: 10px 2px;}
+.file-upload-btn img {width: 30px;height: 30px;object-fit: contain;}

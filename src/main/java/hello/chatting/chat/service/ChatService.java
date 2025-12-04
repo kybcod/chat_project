@@ -5,15 +5,28 @@ import hello.chatting.chat.dto.ChatMessageDto;
 import hello.chatting.chat.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChatService {
+
+    @Value("${file.upload.path}")
+    private String uploadDir;
 
     private final ChatRepository chatRepository;
 
@@ -25,5 +38,48 @@ public class ChatService {
     @Transactional(readOnly = true)
     public List<ChatMessage> findByRoomIdOrderByCreatedAt(Long roomId) {
         return chatRepository.findByRoomIdOrderByCreatedAt(roomId);
+    }
+
+    /**
+     * 채팅용 파일 업로드
+     */
+    @Transactional
+    public ChatMessage chatFileUpload(MultipartFile file, Long roomId, String sender) throws Exception {
+        if (file.isEmpty()) {
+            throw new Exception("파일이 없습니다.");
+        }
+
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String saveFilename = UUID.randomUUID() + extension;
+
+        Path baseDir = Paths.get(uploadDir);
+        if (!Files.exists(baseDir)) {
+            Files.createDirectories(baseDir);
+        }
+
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        Path uploadDir = baseDir.resolve(today);
+        if (!Files.exists(uploadDir)) {
+            Files.createDirectories(uploadDir);
+        }
+
+        Path filePath = uploadDir.resolve(saveFilename);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        // 클라이언트 접근용 URL 생성 WebMvcConfigurer에서 /files/** → uploadPath 매핑 필요
+        String fileUrl = "/files/" + today + "/" + saveFilename;
+
+        ChatMessage chatMessage = ChatMessage.builder()
+                .roomId(roomId)
+                .sender(sender)
+                .fileUrl(fileUrl)
+                .fileName(originalFilename)
+                .fileType(file.getContentType())
+                .build();
+
+        chatRepository.save(chatMessage);
+
+        return chatMessage;
     }
 }
