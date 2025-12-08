@@ -45,11 +45,12 @@ public class ChatController {
 
     @GetMapping("/chat/messages/{roomId}")
     @ResponseBody
-    public List<ChatMessageDto> getMessages(@PathVariable Long roomId) {
-        return chatService.findByRoomIdOrderByCreatedAt(roomId)
+    public ResponseEntity<?> getMessages(@PathVariable Long roomId) {
+        List<ChatMessageDto> chatMessageDtoList = chatService.findByRoomIdOrderByCreatedAt(roomId)
                 .stream()
                 .map(ChatMessageDto::toDto)
                 .collect(Collectors.toList());
+        return ResponseEntity.ok(chatMessageDtoList);
     }
 
     @PostMapping("/chat/upload")

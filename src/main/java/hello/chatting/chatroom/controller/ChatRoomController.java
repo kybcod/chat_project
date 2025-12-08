@@ -10,6 +10,7 @@ import hello.chatting.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +26,8 @@ public class ChatRoomController {
     private final UserService userService;
 
     @GetMapping("/list")
-    public List<ChatRoomDto> findAllByUserId(ChatRoomReqDto dto) throws Exception {
-        return chatRoomService.findAllByUserId(dto.getUserId()).stream()
+    public ResponseEntity<?> findAllByUserId(ChatRoomReqDto dto) throws Exception {
+        List<ChatRoomDto> chatRoomDtoList = chatRoomService.findAllByUserId(dto.getUserId()).stream()
                 .map(chatRoom -> {
                     String friendName = userService.extractFriendName(
                             chatRoom.getRoomName(),
@@ -35,25 +36,26 @@ public class ChatRoomController {
                     return ChatRoomDto.toDto(chatRoom, friendName);
                 })
                 .collect(Collectors.toList());
+        return ResponseEntity.ok(chatRoomDtoList);
     }
 
     @PostMapping("/find")
-    public ChatRoomDto findRoom(@Valid @RequestBody ChatRoomReqDto dto) throws Exception {
+    public ResponseEntity<?> findRoom(@Valid @RequestBody ChatRoomReqDto dto) throws Exception {
         ChatRoom privateRoom = chatRoomService.findPrivateRoom(dto);
         String friendName = chatRoomService.getFriendName(privateRoom, dto.getUserId());
-        return ChatRoomDto.toDto(privateRoom, friendName);
+        return  ResponseEntity.ok(ChatRoomDto.toDto(privateRoom, friendName));
     }
 
     @PostMapping("/create")
-    public ChatRoomDto createRoom(@Valid @RequestBody ChatRoomReqDto dto) throws Exception {
+    public ResponseEntity<?> createRoom(@Valid @RequestBody ChatRoomReqDto dto) throws Exception {
         ChatRoom room = chatRoomService.createPrivateRoom(dto);
         String friendName = chatRoomService.getFriendName(room, dto.getUserId());
-        return ChatRoomDto.toDto(room, friendName);
+        return ResponseEntity.ok(ChatRoomDto.toDto(room, friendName));
     }
 
     @GetMapping("/findRoom")
-    public ChatRoomMemberDto getRoomInfo(ChatRoomReqDto dto) {
+    public ResponseEntity<?> getRoomInfo(ChatRoomReqDto dto) {
         ChatRoomMember userIdNot = chatRoomService.findByRoomIdAndUserIdNot(dto);
-        return ChatRoomMemberDto.toDto(userIdNot);
+        return ResponseEntity.ok(ChatRoomMemberDto.toDto(userIdNot));
     }
 }
