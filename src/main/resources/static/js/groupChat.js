@@ -114,10 +114,32 @@ $(document).on('click', '#selected-users .btn-close', function() {
 });
 
 function groupCreatePopup(){
-    console.log("생성", selectedUsers)
+    console.log("생성", selectedUsers.map(u => u.loginId))
 
     // selectUsers를 가지고 조회 한 번 때려야 함
+    $.ajax({
+        url: "/chatRoom/userIds",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            userIds: selectedUsers.map(u => u.loginId)
+        }),
+        success: function (room) {
+            if (room && room.length > 0) {
+                // 여러개가 있다면 선택할 수 있게
+                console.log("여러개 중 하나 선택할 수 있도록 중복 채팅방 팝업2")
+            }else {
+                // 업다면 바로 채팅방 설정 팝업
+                console.log("없으면 바로 채팅방 설정 팝업3")
+            }
+        },
+        error: function (xhr) {
+            let msg = xhr.responseJSON ? xhr.responseJSON.msg : xhr.responseText;
+            basicAlert({icon: 'error', text: msg});
+        }
+    });
+
+
     // 만약 해당 chatRoom이 있다면 중복 팝업
     // 업다면 바로 채팅방 설정 팝업
-    // 선택한 사람 중에 중복 채팅방이 있다면
 }

@@ -1,23 +1,23 @@
 package hello.chatting.chatroom.service;
 
-import hello.chatting.chat.dto.ChatMessageDto;
 import hello.chatting.chatroom.domain.ChatRoom;
 import hello.chatting.chatroom.domain.ChatRoomMember;
 import hello.chatting.chatroom.domain.Role;
 import hello.chatting.chatroom.domain.RoomType;
-import hello.chatting.chatroom.dto.ChatRoomDto;
 import hello.chatting.chatroom.dto.ChatRoomReqDto;
+import hello.chatting.chatroom.dto.PrivateChatRoomReqDto;
 import hello.chatting.chatroom.repository.ChatRoomMemberRepository;
 import hello.chatting.chatroom.repository.ChatRoomRepository;
 import hello.chatting.user.repository.UserRepository;
 import hello.chatting.user.service.UserService;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -92,5 +92,12 @@ public class ChatRoomService {
     public String getFriendName(ChatRoom chatRoom, String userId) {
         return userService.extractFriendName(chatRoom.getRoomName(), userId);
     }
+
+    public List<ChatRoom> findRoomByUserIds(List<String> userIds) {
+        return chatRoomMemberRepository
+                .findRoomsByExactMembers(userIds, userIds.size());
+    }
+
+
 }
 

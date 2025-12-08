@@ -5,6 +5,7 @@ import hello.chatting.chatroom.domain.ChatRoomMember;
 import hello.chatting.chatroom.dto.ChatRoomDto;
 import hello.chatting.chatroom.dto.ChatRoomMemberDto;
 import hello.chatting.chatroom.dto.ChatRoomReqDto;
+import hello.chatting.chatroom.dto.PrivateChatRoomReqDto;
 import hello.chatting.chatroom.service.ChatRoomService;
 import hello.chatting.user.service.UserService;
 import jakarta.validation.Valid;
@@ -13,7 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -57,5 +60,24 @@ public class ChatRoomController {
     public ResponseEntity<?> getRoomInfo(ChatRoomReqDto dto) {
         ChatRoomMember userIdNot = chatRoomService.findByRoomIdAndUserIdNot(dto);
         return ResponseEntity.ok(ChatRoomMemberDto.toDto(userIdNot));
+    }
+
+    @PostMapping("/userIds")
+    public ResponseEntity<?> findRoomByUserIds(@RequestBody PrivateChatRoomReqDto dto) throws Exception {
+        List<String> userIds = Optional.ofNullable(dto.getUserIds())
+                .orElse(Collections.emptyList());
+
+        List<ChatRoomDto> room = chatRoomService.findRoomByUserIds(userIds).stream()
+                .map(chatRoom -> {
+                    return ChatRoomDto.builder()
+                            .id(chatRoom.getId())
+                            .roomName(chatRoom.getRoomName())
+                            .type(chatRoom.getType())
+                            .createdAt(chatRoom.getCreatedAt())
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(room);
     }
 }
