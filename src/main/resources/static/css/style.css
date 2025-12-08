@@ -11,6 +11,7 @@ nav.sidebar.collapsed {width: 60px;}
 .user-info {display: flex;align-items: center;gap: 10px;}
 .user-info img {width: 30px;height: 30px;border-radius: 50%;}
 .login-buttons a {display: block;color: #fff;text-decoration: none;padding: 5px 0;}
+.login-buttons a:hover {color: lightgray;}
 .group-btn {display: inline-block;width: 30px;height: 30px;cursor: pointer;}
 .group-btn img {width: 30px;height: 30px;object-fit: contain;}
 
