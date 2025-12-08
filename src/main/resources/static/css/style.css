@@ -82,3 +82,13 @@ main#main-content {flex: 1;background-color: #343541;color: #fff;padding: 20px;o
 #chatPlaceholder {justify-content: center;align-items: center;font-size: xx-large;}
 .file-upload-btn {display: inline-block;width: 30px;height: 30px;cursor: pointer;padding: 10px 2px;}
 .file-upload-btn img {width: 30px;height: 30px;object-fit: contain;}
+
+/* '입력 중' 버블을 위한 스타일 추가 */
+.chat-message[id^="typing-bubble-"] .msg-content {min-width: 40px;padding: 3px 1px;}
+.typing-bubble {width: 8px;aspect-ratio: 1;border-radius: 50%;animation: l5 1s infinite linear alternate;margin: 0 auto;}
+@keyframes l5 {
+    0%  { box-shadow: 20px 0 #fff, -20px 0 #ccc; background: #fff; }
+    33% { box-shadow: 20px 0 #fff, -20px 0 #ccc; background: #ccc; }
+    66% { box-shadow: 20px 0 #ccc, -20px 0 #fff; background: #ccc; }
+    100%{ box-shadow: 20px 0 #ccc, -20px 0 #fff; background: #fff; }
+}

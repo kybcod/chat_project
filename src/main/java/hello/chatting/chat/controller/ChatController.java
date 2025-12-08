@@ -38,6 +38,11 @@ public class ChatController {
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 
+    @MessageMapping("chat/typing")
+    public void typing(ChatMessageDto message) {
+        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+    }
+
     @GetMapping("/chat/messages/{roomId}")
     @ResponseBody
     public List<ChatMessageDto> getMessages(@PathVariable Long roomId) {
