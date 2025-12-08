@@ -48,17 +48,10 @@ public class ChatRoomService {
         String userId = dto.getUserId();
         String friendId = dto.getFriendId();
 
-        String userName = userRepository.findByLoginId(userId)
-                .orElseThrow(() -> new RuntimeException("사용자 없음: " + userId))
-                .getName();
-        String friendName = userRepository.findByLoginId(friendId)
-                .orElseThrow(() -> new RuntimeException("사용자 없음: " + friendId))
-                .getName();
-
         // ChatRoom 생성
         ChatRoom room = ChatRoom.builder()
                 .type(RoomType.PRIVATE)
-                .roomName(userName + ", " + friendName)
+                .roomName(userId + ", " + friendId)
                 .build();
         room = chatRoomRepository.save(room);
 
