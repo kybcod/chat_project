@@ -10,8 +10,8 @@ function groupPopup() {
     loadUsersForPopup();
 
     // Bootstrap Modal 인스턴스 생성 및 표시
-    const groupChatModal = new bootstrap.Modal(document.getElementById('groupChatModal'));
-    groupChatModal.show();
+    const selectFriModal = new bootstrap.Modal(document.getElementById('selectFriModal'));
+    selectFriModal.show();
 }
 
 // 사용자 목록을 불러와 팝업에 렌더링하는 함수
@@ -48,7 +48,7 @@ function loadUsersForPopup() {
 
 // 선택된 사용자 UI를 업데이트하는 함수
 function updateSelectedUsersDisplay() {
-    const displayContainer = $('#selected-users-display');
+    const displayContainer = $('#selected-users');
     displayContainer.empty(); // 기존 내용 삭제
 
     selectedUsers.forEach(user => {
@@ -66,7 +66,7 @@ function updateSelectedUsersDisplay() {
 function resetGroupPopup() {
     selectedUsers = [];
     updateSelectedUsersDisplay();
-    $('#user-search-input').val('');
+    $('#user-search').val('');
     $('#user-list-container').empty();
 }
 
@@ -100,7 +100,7 @@ function selectChoose(checkbox){
 
 
 // 선택된 사용자 태그의 X 버튼 클릭 이벤트 리스너
-$(document).on('click', '#selected-users-display .btn-close', function() {
+$(document).on('click', '#selected-users .btn-close', function() {
     const userIdToRemove = $(this).closest('.selected-user-tag').data('user-id');
 
     // 1. selectedUsers 배열에서 사용자 제거

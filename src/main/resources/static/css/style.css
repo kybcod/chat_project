@@ -95,5 +95,5 @@ main#main-content {flex: 1;background-color: #343541;color: #fff;padding: 20px;o
     100%{ box-shadow: 20px 0 #ccc, -20px 0 #fff; background: #fff; }
 }
 
-.selected-users-display-container {max-height: 60px;overflow-y: auto;}
+.selected-users-container {max-height: 60px;overflow-y: auto;}
 .user-list-container {max-height: 300px;overflow-y: auto;}
