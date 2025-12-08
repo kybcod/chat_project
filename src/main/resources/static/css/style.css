@@ -5,12 +5,14 @@ html, body {margin: 0;padding: 0;height: 100%;width: 100%;}
 nav.sidebar {width: 250px;height: 100%;background-color: #202123;color: #fff;display: flex;flex-direction: column;transition: width 0.3s;padding: 10px;}
 nav.sidebar.collapsed {width: 60px;}
 .menu-toggle {cursor: pointer;font-size: 24px;padding: 10px;}
-.menu-item {padding: 15px 10px;cursor: pointer;border-radius: 5px;}
+.menu-item {padding: 15px 10px;cursor: pointer;border-radius: 5px;display: flex;justify-content: space-between;align-items: center;}
 .menu-item:hover {background-color: #343541;}
 .user-section {margin-top: auto;display: flex;flex-direction: column;gap: 10px;}
 .user-info {display: flex;align-items: center;gap: 10px;}
 .user-info img {width: 30px;height: 30px;border-radius: 50%;}
 .login-buttons a {display: block;color: #fff;text-decoration: none;padding: 5px 0;}
+.group-btn {display: inline-block;width: 30px;height: 30px;cursor: pointer;}
+.group-btn img {width: 30px;height: 30px;object-fit: contain;}
 
 /* 기본적으로 아이콘 숨김 */
 .menu-item .icon, .login-buttons .icon {display: none;}
