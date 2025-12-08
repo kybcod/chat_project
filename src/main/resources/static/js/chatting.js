@@ -256,7 +256,7 @@ function enterRoom(room_id) {
         const msg = JSON.parse(messageOutput.body);
         const sender = msg.sender;
 
-        if (sender === loginUser.loginId) {
+        if (sender === loginUser.loginId && msg.type === 'TYPING') {
             return;
         }
 
