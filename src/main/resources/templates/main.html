@@ -16,6 +16,38 @@
     </main>
 </div>
 
+<!-- 그룹 채팅방 생성을 위한 모달 -->
+<div class="modal fade" id="groupChatModal" tabindex="-1" aria-labelledby="groupChatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="groupChatModalLabel">그룹 채팅방 생성</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="selected-users-display" class="form-label">선택된 친구</label>
+                    <div id="selected-users-display" class="selected-users-display-container">
+                        <!-- 선택된 사용자가 여기에 표시됩니다. -->
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="user-search-input" class="form-label">친구 검색</label>
+                    <input type="text" class="form-control" id="user-search-input" placeholder="이름으로 검색..." oninput="searchFriends(this)">
+                </div>
+                <div id="user-list-container" class="user-list-container">
+                    <!-- 사용자 목록이 여기에 동적으로 추가됩니다. -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" id="create-group-chat-btn" onclick="groupCreatePopup()">생성</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script th:inline="javascript">
     const isAuthenticated = /*[[${#authorization.expression('isAuthenticated()')}]]*/ false;
     window.loginUser = /*[[${loginUser}]]*/ null;
