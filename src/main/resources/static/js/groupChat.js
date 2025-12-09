@@ -33,14 +33,16 @@ function loadUsersForPopup() {
                     return;
                 }
                 const userItemHTML = `
-                    <div class="user-item" data-user-id="${user.id}" data-user-name="${user.name}">
-                        <input class="form-check-input" type="checkbox" value="${user.loginId}" id="user-checkbox-${user.id}" onchange="selectChoose(this)">
+                    <div class="user-item">
+                        <input class="form-check-input" type="checkbox" id="user-checkbox-${user.id}"
+                            onchange='selectChoose(this, ${JSON.stringify(user)})'>
                         <img src="${user.profileImage}" alt="${user.name}" class="friends-profile-img">
-                        <label class="form-check-label" for="user-checkbox-${user.id}">
+                        <label class="form-check-label user-name-label" for="user-checkbox-${user.id}">
                             ${user.name}
                         </label>
                     </div>
                 `;
+
                 userListContainer.append(userItemHTML);
             });
         },
@@ -79,29 +81,27 @@ function resetGroupPopup() {
 function searchFriends(input){
     const searchTerm = $(input).val().toLowerCase();
     $('.user-item').each(function() {
-        const userName = $(this).data('user-name').toLowerCase();
+        let userName = $(this).find('.user-name-label').text().toLowerCase();
         $(this).toggle(userName.includes(searchTerm));
     });
 }
 
 
 // 사용자 선택/해제 이벤트 리스너 (checkbox change)
-function selectChoose(checkbox){
-    const loginId = $(checkbox).val(); // 그대로 loginId
-    const userId = $(checkbox).closest('.user-item').data('user-id'); // 숫자 id
-    const userName = $(checkbox).closest('.user-item').data('user-name');
+function selectChoose(checkbox, user) {
     const isChecked = $(checkbox).is(':checked');
 
     if (isChecked) {
-        if (!selectedUsers.some(user => user.id === userId)) {
-            selectedUsers.push({ id: userId, loginId: loginId, name: userName });
+        if (!selectedUsers.some(u => u.id === user.id)) {
+            selectedUsers.push({ id: user.id, loginId: user.loginId, name: user.name });
         }
     } else {
-        selectedUsers = selectedUsers.filter(user => user.id !== userId);
+        selectedUsers = selectedUsers.filter(u => u.id !== user.id);
     }
 
     updateSelectedUsersDisplay();
 }
+
 
 
 // 선택된 사용자 태그의 X 버튼 클릭 이벤트 리스너
