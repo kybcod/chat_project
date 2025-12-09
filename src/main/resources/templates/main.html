@@ -41,14 +41,14 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary" id="create-group-chat-btn" onclick="groupDupliChatModal()">생성</button>
+                <button type="button" class="btn btn-primary" id="create-group-chat-btn" onclick="groupChatroomCreate()">생성</button>
             </div>
         </div>
     </div>
 </div>
 
 
-<!-- 중복 채팅방 생성을 위한 모달 -->
+<!-- 중복 채팅방 안내 모달 -->
 <div class="modal fade" id="dupliChatModal" tabindex="-1" aria-labelledby="dupliChatModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -58,11 +58,11 @@
             </div>
             <div class="modal-body">
                 <div id="chat-list-container" class="user-list-container">
-                    <!-- 사용자 목록이 여기에 동적으로 추가됩니다. -->
+                    <!-- 중복된 채팅방 목록이 여기에 동적으로 추가됩니다. -->
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="groupCreatePopup()">채팅방 만들기</button>
+                <button type="button" class="btn btn-primary" onclick="groupNewChatRoomCreate()">새로운 채팅방 만들기</button>
             </div>
         </div>
     </div>
@@ -85,7 +85,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="groupCreatePopup()">채팅방 만들기</button>
+                <button type="button" class="btn btn-primary" onclick="groupNewChatRoomCreate()">채팅방 만들기</button>
             </div>
         </div>
     </div>

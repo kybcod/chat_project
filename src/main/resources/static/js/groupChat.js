@@ -118,7 +118,7 @@ $(document).on('click', '#selected-users .btn-close', function() {
     $(`#user-checkbox-${userIdToRemove}`).prop('checked', false);
 });
 
-function groupDupliChatModal(){
+function groupChatroomCreate(){
 
     // selectUsers를 가지고 조회 한 번 때려야 함
     $.ajax({
@@ -131,15 +131,10 @@ function groupDupliChatModal(){
         }),
         success: function (room) {
             if (room && room.length > 0) {
-                // 여러개가 있다면 선택할 수 있게
-                selectFriModal.hide()
-                dupliChatModal.show()
-                console.log("여러개 중 하나 선택할 수 있도록 중복 채팅방 팝업2", room);
+                groupDupliChatModal(room);
             }else {
                 // 업다면 바로 채팅방 설정 팝업
-                selectFriModal.hide()
-                teamChatModal.show();
-                console.log("없으면 바로 채팅방 설정 팝업3", room);
+                groupTeamChatModal(room);
             }
         },
         error: function (xhr) {
@@ -148,12 +143,60 @@ function groupDupliChatModal(){
         }
     });
 
-
-    // 만약 해당 chatRoom이 있다면 중복 팝업
-    // 업다면 바로 채팅방 설정 팝업
 }
 
+// 중복 채팅방 생성 안내 모달
+function groupDupliChatModal(rooms) {
+
+    selectFriModal.hide();
+    dupliChatModal.show();
+
+    const chatListContainer = $('#chat-list-container');
+    chatListContainer.empty();
+
+    rooms.forEach(room => {
+        const users = room.users;
+        const memberCount = room.memberCount;
+        const roomName = room.roomName;
+        const roomId = room.roomId;
+
+        // 프로필 이미지 (최대 4개)
+        const userCount = users.length > 4 ? 4 : users.length;
+        let profileImagesHTML = `<div class="profile-images user-count-${userCount}">`;
+        users.slice(0, 4).forEach(user => {
+            profileImagesHTML += `<img src="${user.profileImage || '/images/orgProfile.png'}" alt="${user.name}">`;
+        });
+        profileImagesHTML += '</div>';
+
+        const chatItemHTML = `
+            <div class="dupli-chat-item">
+                ${profileImagesHTML}
+                <div class="room-info">
+                    <span class="room-name">${roomName}</span>
+                    <span class="member-count">${memberCount}명</span>
+                </div>
+                <button class="btn btn-primary go-chat-btn" onclick="enterRoomAndCloseModal(${roomId})">채팅방으로 이동</button>
+            </div>
+        `;
+        chatListContainer.append(chatItemHTML);
+    });
+}
+
+function enterRoomAndCloseModal(roomId) {
+    dupliChatModal.hide();
+    enterRoom(roomId);
+}
+
+// 새로운 팀 채팅 방 모달
+function groupTeamChatModal(room){
+    selectFriModal.hide()
+    teamChatModal.show();
+
+    console.log("없으면 바로 채팅방 설정 팝업3", room);
+
+}
 // 채팅방 만들기
-function groupCreatePopup(){
+function groupNewChatRoomCreate(){
 
 }
+
