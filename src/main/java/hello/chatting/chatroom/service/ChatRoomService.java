@@ -83,7 +83,7 @@ public class ChatRoomService {
         return allByUserId;
     }
 
-    public ChatRoomMember findByRoomIdAndUserIdNot(ChatRoomReqDto dto) {
+    public List<ChatRoomMember> findByRoomIdAndUserIdNot(ChatRoomReqDto dto) {
         return chatRoomMemberRepository.findByRoomIdAndUserIdNot(dto.getRoomId(), dto.getUserId());
     }
 
@@ -92,6 +92,8 @@ public class ChatRoomService {
     }
 
     public List<RoomWithUsersDto> findRoomByUserIds(List<String> userIds, String requesterId) {
+        userIds.add(requesterId);
+
         List<Object[]> info = chatRoomMemberRepository
                 .findRoomAndUsersByExactMembers(userIds, userIds.size());
 
@@ -106,14 +108,17 @@ public class ChatRoomService {
             String name = (String) row[4];
             String email = (String) row[5];
             String profileImage = (String) row[6];
+            Long memberCount = ((Number) row[7]).longValue();
 
             String groupRoomName = userService.extractFriendName(roomName, requesterId);
 
-            map.computeIfAbsent(roomId, id ->
-                    new RoomWithUsersDto(id, groupRoomName, type, new ArrayList<>())
-            ).users().add(new RoomWithUsersDto.UserInfo(
-                    userId, name, email, profileImage
-            ));
+            if (!userId.equals(requesterId)) {
+                map.computeIfAbsent(roomId, id ->
+                        new RoomWithUsersDto(id, groupRoomName, type, memberCount,new ArrayList<>())
+                ).users().add(new RoomWithUsersDto.UserInfo(
+                        userId, name, email, profileImage
+                ));
+            }
         }
 
         return new ArrayList<>(map.values());

@@ -55,8 +55,10 @@ public class ChatRoomController {
 
     @GetMapping("/findRoom")
     public ResponseEntity<?> getRoomInfo(ChatRoomReqDto dto) {
-        ChatRoomMember userIdNot = chatRoomService.findByRoomIdAndUserIdNot(dto);
-        return ResponseEntity.ok(ChatRoomMemberDto.toDto(userIdNot));
+        List<ChatRoomMemberDto> userIdNot = chatRoomService.findByRoomIdAndUserIdNot(dto).stream()
+                .map(ChatRoomMemberDto::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userIdNot);
     }
 
     @PostMapping("/userIds")

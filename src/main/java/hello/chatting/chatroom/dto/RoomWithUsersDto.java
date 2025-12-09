@@ -6,6 +6,7 @@ public record RoomWithUsersDto(
         Long roomId,
         String roomName,
         String type,
+        Long memberCount,
         List<UserInfo> users
 ) {
     public static record UserInfo(
