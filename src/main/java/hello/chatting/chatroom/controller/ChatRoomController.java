@@ -5,7 +5,7 @@ import hello.chatting.chatroom.domain.ChatRoomMember;
 import hello.chatting.chatroom.dto.ChatRoomDto;
 import hello.chatting.chatroom.dto.ChatRoomMemberDto;
 import hello.chatting.chatroom.dto.ChatRoomReqDto;
-import hello.chatting.chatroom.dto.PrivateChatRoomReqDto;
+import hello.chatting.chatroom.dto.GroupChatRoomReqDto;
 import hello.chatting.chatroom.service.ChatRoomService;
 import hello.chatting.user.service.UserService;
 import jakarta.validation.Valid;
@@ -63,18 +63,17 @@ public class ChatRoomController {
     }
 
     @PostMapping("/userIds")
-    public ResponseEntity<?> findRoomByUserIds(@RequestBody PrivateChatRoomReqDto dto) throws Exception {
+    public ResponseEntity<?> findRoomByUserIds(@RequestBody GroupChatRoomReqDto dto) throws Exception {
         List<String> userIds = Optional.ofNullable(dto.getUserIds())
                 .orElse(Collections.emptyList());
 
         List<ChatRoomDto> room = chatRoomService.findRoomByUserIds(userIds).stream()
                 .map(chatRoom -> {
-                    return ChatRoomDto.builder()
-                            .id(chatRoom.getId())
-                            .roomName(chatRoom.getRoomName())
-                            .type(chatRoom.getType())
-                            .createdAt(chatRoom.getCreatedAt())
-                            .build();
+                    String friendName = userService.extractFriendName(
+                            chatRoom.getRoomName(),
+                            dto.getUserId()
+                    );
+                    return ChatRoomDto.toDto(chatRoom, friendName);
                 })
                 .collect(Collectors.toList());
 

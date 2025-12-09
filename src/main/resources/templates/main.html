@@ -41,12 +41,55 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary" id="create-group-chat-btn" onclick="groupCreatePopup()">생성</button>
+                <button type="button" class="btn btn-primary" id="create-group-chat-btn" onclick="groupDupliChatModal()">생성</button>
             </div>
         </div>
     </div>
 </div>
 
+
+<!-- 중복 채팅방 생성을 위한 모달 -->
+<div class="modal fade" id="dupliChatModal" tabindex="-1" aria-labelledby="dupliChatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dupliChatModalLabel">중복 채팅방 생성 안내</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="chat-list-container" class="user-list-container">
+                    <!-- 사용자 목록이 여기에 동적으로 추가됩니다. -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="groupCreatePopup()">채팅방 만들기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 팀 채팅방 생성을 위한 모달 -->
+<div class="modal fade" id="teamChatModal" tabindex="-1" aria-labelledby="teamChatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="teamChatModalLabel">팀채팅 만들기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <img src="" />
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="group-name" placeholder="채팅방 이름 설정..." oninput="searchFriends(this)">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="groupCreatePopup()">채팅방 만들기</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script th:inline="javascript">
     const isAuthenticated = /*[[${#authorization.expression('isAuthenticated()')}]]*/ false;

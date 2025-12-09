@@ -10,7 +10,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PrivateChatRoomReqDto {
+public class GroupChatRoomReqDto {
     private Long roomId;
+    private String userId;
     private List<String> userIds;
 }

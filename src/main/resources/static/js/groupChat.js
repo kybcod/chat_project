@@ -1,5 +1,8 @@
 // 선택된 사용자 정보를 담을 배열
 let selectedUsers = [];
+let selectFriModal;
+let dupliChatModal;
+let teamChatModal;
 
 // 팝업을 여는 함수
 function groupPopup() {
@@ -9,9 +12,11 @@ function groupPopup() {
     // 사용자 목록 로드
     loadUsersForPopup();
 
-    // Bootstrap Modal 인스턴스 생성 및 표시
-    const selectFriModal = new bootstrap.Modal(document.getElementById('selectFriModal'));
+    selectFriModal = new bootstrap.Modal(document.getElementById('selectFriModal'));
     selectFriModal.show();
+
+    dupliChatModal = new bootstrap.Modal(document.getElementById('dupliChatModal'));
+    teamChatModal = new bootstrap.Modal(document.getElementById('teamChatModal'));
 }
 
 // 사용자 목록을 불러와 팝업에 렌더링하는 함수
@@ -113,8 +118,7 @@ $(document).on('click', '#selected-users .btn-close', function() {
     $(`#user-checkbox-${userIdToRemove}`).prop('checked', false);
 });
 
-function groupCreatePopup(){
-    console.log("생성", selectedUsers.map(u => u.loginId))
+function groupDupliChatModal(){
 
     // selectUsers를 가지고 조회 한 번 때려야 함
     $.ajax({
@@ -122,15 +126,20 @@ function groupCreatePopup(){
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({
-            userIds: selectedUsers.map(u => u.loginId)
+            userIds: selectedUsers.map(u => u.loginId),
+            userId : loginUser.loginId,
         }),
         success: function (room) {
             if (room && room.length > 0) {
                 // 여러개가 있다면 선택할 수 있게
-                console.log("여러개 중 하나 선택할 수 있도록 중복 채팅방 팝업2")
+                selectFriModal.hide()
+                dupliChatModal.show()
+                console.log("여러개 중 하나 선택할 수 있도록 중복 채팅방 팝업2", room);
             }else {
                 // 업다면 바로 채팅방 설정 팝업
-                console.log("없으면 바로 채팅방 설정 팝업3")
+                selectFriModal.hide()
+                teamChatModal.show();
+                console.log("없으면 바로 채팅방 설정 팝업3", room);
             }
         },
         error: function (xhr) {
@@ -142,4 +151,9 @@ function groupCreatePopup(){
 
     // 만약 해당 chatRoom이 있다면 중복 팝업
     // 업다면 바로 채팅방 설정 팝업
+}
+
+// 채팅방 만들기
+function groupCreatePopup(){
+
 }

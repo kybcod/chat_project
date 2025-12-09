@@ -5,7 +5,6 @@ import hello.chatting.chatroom.domain.ChatRoomMember;
 import hello.chatting.chatroom.domain.Role;
 import hello.chatting.chatroom.domain.RoomType;
 import hello.chatting.chatroom.dto.ChatRoomReqDto;
-import hello.chatting.chatroom.dto.PrivateChatRoomReqDto;
 import hello.chatting.chatroom.repository.ChatRoomMemberRepository;
 import hello.chatting.chatroom.repository.ChatRoomRepository;
 import hello.chatting.user.repository.UserRepository;
