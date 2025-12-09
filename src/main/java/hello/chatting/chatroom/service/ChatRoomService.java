@@ -5,6 +5,7 @@ import hello.chatting.chatroom.domain.ChatRoomMember;
 import hello.chatting.chatroom.domain.Role;
 import hello.chatting.chatroom.domain.RoomType;
 import hello.chatting.chatroom.dto.ChatRoomReqDto;
+import hello.chatting.chatroom.dto.RoomWithUsersDto;
 import hello.chatting.chatroom.repository.ChatRoomMemberRepository;
 import hello.chatting.chatroom.repository.ChatRoomRepository;
 import hello.chatting.user.repository.UserRepository;
@@ -14,9 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -92,10 +91,34 @@ public class ChatRoomService {
         return userService.extractFriendName(chatRoom.getRoomName(), userId);
     }
 
-    public List<ChatRoom> findRoomByUserIds(List<String> userIds) {
-        return chatRoomMemberRepository
-                .findRoomsByExactMembers(userIds, userIds.size());
+    public List<RoomWithUsersDto> findRoomByUserIds(List<String> userIds, String requesterId) {
+        List<Object[]> info = chatRoomMemberRepository
+                .findRoomAndUsersByExactMembers(userIds, userIds.size());
+
+        Map<Long, RoomWithUsersDto> map = new LinkedHashMap<>();
+
+        for (Object[] row : info) {
+            Long roomId = ((Number) row[0]).longValue();
+            String roomName = (String) row[1];
+            String type = (String) row[2];
+
+            String userId = (String) row[3];
+            String name = (String) row[4];
+            String email = (String) row[5];
+            String profileImage = (String) row[6];
+
+            String groupRoomName = userService.extractFriendName(roomName, requesterId);
+
+            map.computeIfAbsent(roomId, id ->
+                    new RoomWithUsersDto(id, groupRoomName, type, new ArrayList<>())
+            ).users().add(new RoomWithUsersDto.UserInfo(
+                    userId, name, email, profileImage
+            ));
+        }
+
+        return new ArrayList<>(map.values());
     }
+
 
 
 }

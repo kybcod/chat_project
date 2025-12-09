@@ -2,10 +2,7 @@ package hello.chatting.chatroom.controller;
 
 import hello.chatting.chatroom.domain.ChatRoom;
 import hello.chatting.chatroom.domain.ChatRoomMember;
-import hello.chatting.chatroom.dto.ChatRoomDto;
-import hello.chatting.chatroom.dto.ChatRoomMemberDto;
-import hello.chatting.chatroom.dto.ChatRoomReqDto;
-import hello.chatting.chatroom.dto.GroupChatRoomReqDto;
+import hello.chatting.chatroom.dto.*;
 import hello.chatting.chatroom.service.ChatRoomService;
 import hello.chatting.user.service.UserService;
 import jakarta.validation.Valid;
@@ -63,20 +60,17 @@ public class ChatRoomController {
     }
 
     @PostMapping("/userIds")
-    public ResponseEntity<?> findRoomByUserIds(@RequestBody GroupChatRoomReqDto dto) throws Exception {
+    public ResponseEntity<?> findRoomByUserIds(@RequestBody GroupChatRoomReqDto dto) {
+
         List<String> userIds = Optional.ofNullable(dto.getUserIds())
                 .orElse(Collections.emptyList());
 
-        List<ChatRoomDto> room = chatRoomService.findRoomByUserIds(userIds).stream()
-                .map(chatRoom -> {
-                    String friendName = userService.extractFriendName(
-                            chatRoom.getRoomName(),
-                            dto.getUserId()
-                    );
-                    return ChatRoomDto.toDto(chatRoom, friendName);
-                })
-                .collect(Collectors.toList());
+        List<RoomWithUsersDto> rooms = chatRoomService.findRoomByUserIds(
+                userIds,
+                dto.getUserId()
+        );
 
-        return ResponseEntity.ok(room);
+        return ResponseEntity.ok(rooms);
     }
+
 }

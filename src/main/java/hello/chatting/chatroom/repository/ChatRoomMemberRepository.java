@@ -13,19 +13,31 @@ import java.util.List;
 public interface ChatRoomMemberRepository extends JpaRepository<ChatRoomMember, Long> {
     ChatRoomMember findByRoomIdAndUserIdNot(Long roomId, String userId);
 
-    @Query("""
-        SELECT r
-        FROM ChatRoom r
+    @Query(value = """
+        SELECT 
+            r.id,
+            r.room_name,
+            r.type,
+            u.login_id,
+            u.name,
+            u.email,
+            u.profile_image
+        FROM chat_room r
+        JOIN chat_room_member m ON r.id = m.room_id
+        JOIN user u ON m.user_id = u.login_id
         WHERE r.id IN (
-            SELECT m.roomId
-            FROM ChatRoomMember m
-            WHERE m.userId IN :userIds
-            GROUP BY m.roomId
-            HAVING COUNT(DISTINCT m.userId) = :userCount
+            SELECT room_id
+            FROM chat_room_member
+            WHERE user_id IN (:userIds)
+            GROUP BY room_id
+            HAVING COUNT(DISTINCT user_id) = :userCount
         )
-    """)
-    List<ChatRoom> findRoomsByExactMembers(@Param("userIds") List<String> userIds,
-                                           @Param("userCount") long userCount);
+    """, nativeQuery = true)
+    List<Object[]> findRoomAndUsersByExactMembers(
+            @Param("userIds") List<String> userIds,
+            @Param("userCount") long userCount
+    );
+
 
 
 }
