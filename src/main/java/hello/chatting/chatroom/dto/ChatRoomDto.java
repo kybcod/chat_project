@@ -22,11 +22,11 @@ public class ChatRoomDto {
     private LocalDateTime createdAt;
 
     // Entity → DTO 변환 (화면)
-    public static ChatRoomDto toDto(ChatRoom chatRoom, String friendName) {
+    public static ChatRoomDto toDto(ChatRoom chatRoom) {
         return ChatRoomDto.builder()
                 .id(chatRoom.getId())
                 .type(chatRoom.getType())
-                .roomName(friendName)
+                .roomName(chatRoom.getRoomName())
                 .createdAt(chatRoom.getCreatedAt())
                 .build();
     }

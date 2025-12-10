@@ -23,22 +23,4 @@ public class UserService {
         return userList;
     }
 
-
-    // roomName에서 친구 이름 추출하는 메서드
-    public String extractFriendName(String roomName, String userId) {
-        String[] loginIds = roomName.split(", ");
-
-        for (String loginId : loginIds) {
-            if (!loginId.equals(userId)) {
-                // 유일한 loginId로 정확한 사용자 조회 가능
-                User user = userRepository.findByLoginId(loginId)
-                        .orElse(null);
-                if (user != null) {
-                    return user.getName(); // 프론트에 보여줄 이름
-                }
-            }
-        }
-        return null;
-    }
-
 }
