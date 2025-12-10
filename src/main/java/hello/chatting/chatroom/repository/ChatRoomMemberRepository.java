@@ -15,36 +15,37 @@ public interface ChatRoomMemberRepository extends JpaRepository<ChatRoomMember, 
     List<ChatRoomMember> findByRoomIdAndUserIdNot(Long roomId, String userId);
 
     @Query(value = """
-        SELECT 
-            r.id,
-            r.room_name,
-            r.type,
-            u.login_id,
-            u.name,
-            u.email,
-            u.profile_image,
-           rm.memberCount
-        FROM chat_room r
-        JOIN chat_room_member m ON r.id = m.room_id
-        JOIN user u ON m.user_id = u.login_id
-        JOIN (
-            SELECT room_id, COUNT(*) AS memberCount
-            FROM chat_room_member
-            GROUP BY room_id
-        ) AS rm ON rm.room_id = r.id
-        WHERE r.id IN (
-            SELECT room_id
-            FROM chat_room_member
-            WHERE user_id IN (:userIds)
-            GROUP BY room_id
-            HAVING COUNT(DISTINCT user_id) = :userCount
-        )
-        GROUP BY r.id, r.room_name, r.type, u.login_id, u.name, u.email, u.profile_image
-    """, nativeQuery = true)
+    SELECT 
+        r.id,
+        r.room_name,
+        r.type,
+        u.login_id,
+        u.name,
+        u.email,
+        u.profile_image,
+        rm.memberCount
+    FROM chat_room r
+    JOIN chat_room_member m ON r.id = m.room_id
+    JOIN user u ON m.user_id = u.login_id
+    JOIN (
+        SELECT room_id, COUNT(*) AS memberCount
+        FROM chat_room_member
+        GROUP BY room_id
+    ) AS rm ON rm.room_id = r.id
+    WHERE r.id IN (
+        SELECT room_id
+        FROM chat_room_member
+        GROUP BY room_id
+        HAVING COUNT(*) = :userCount
+           AND SUM(user_id IN (:userIds)) = :userCount
+    )
+    GROUP BY r.id, r.room_name, r.type, u.login_id, u.name, u.email, u.profile_image
+""", nativeQuery = true)
     List<Object[]> findRoomAndUsersByExactMembers(
             @Param("userIds") List<String> userIds,
             @Param("userCount") long userCount
     );
+
 
 
 
