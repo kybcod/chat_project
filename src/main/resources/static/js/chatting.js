@@ -214,29 +214,7 @@ function openChatWith(friendLoginId) {
     });
 }
 
-function createPrivateRoom(friendLoginId) {
 
-    $('#chatPlaceholder').hide();
-    $('#chat-input-area').show();
-    $('#chatBox').show();
-
-
-    $.ajax({
-        url: "/chatRoom/create",
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({
-            userId: loginUser.loginId,
-            friendId: friendLoginId
-        }),
-        success: function(room) {
-            enterRoom(room.id);
-        },
-        error: function (xhr, status, err) {
-            basicAlert({ icon: 'error', text: err.responseJSON?.msg || err.responseText });
-        }
-    });
-}
 
 function enterRoom(room_id) {
 
