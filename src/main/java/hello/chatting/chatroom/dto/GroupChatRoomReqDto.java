@@ -15,6 +15,7 @@ import java.util.List;
 public class GroupChatRoomReqDto {
     private Long roomId;
     private String userId;
+    private String roomName;
 
     @NotEmpty(message = "참여자 목록이 비어있습니다.")
     private List<String> userIds;

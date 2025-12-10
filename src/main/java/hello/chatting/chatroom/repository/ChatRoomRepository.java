@@ -30,7 +30,8 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
             LEFT JOIN ChatMessage cm ON cr.id = cm.roomId
         WHERE m.userId = :userId
         GROUP BY cr.id
-        ORDER BY COALESCE(MAX(cm.createdAt), '1970-01-01T00:00:00') DESC
+        ORDER BY cr.createdAt DESC,
+                COALESCE(MAX(cm.createdAt), '1970-01-01T00:00:00') DESC
     """)
     List<ChatRoom> findAllByUserId(String userId);
 

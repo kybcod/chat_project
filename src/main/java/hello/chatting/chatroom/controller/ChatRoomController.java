@@ -66,7 +66,6 @@ public class ChatRoomController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createRoom(@Valid @RequestBody GroupChatRoomReqDto dto) throws Exception {
-        log.info("createRoom {}", dto.toString());
         ChatRoom room = chatRoomService.createRoom(dto);
         return ResponseEntity.ok(room);
     }

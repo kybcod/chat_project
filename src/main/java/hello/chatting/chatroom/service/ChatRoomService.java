@@ -89,10 +89,16 @@ public class ChatRoomService {
 
         RoomType type = partIds.size() == 2 ? RoomType.PRIVATE : RoomType.GROUP;
 
-        // TODO: roomName 정하기
+        String roomName;
+        if (dto.getRoomName() != null && !dto.getRoomName().isBlank()) {
+            roomName = dto.getRoomName();
+        } else {
+            roomName = String.join(", ", partIds);
+        }
+
         ChatRoom room = ChatRoom.builder()
                 .type(type)
-                .roomName("")
+                .roomName(roomName)
                 .build();
 
         chatRoomRepository.save(room);

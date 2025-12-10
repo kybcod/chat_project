@@ -201,12 +201,14 @@ function groupRoomCreate(){
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({
+            roomName : $("#group-name").val(),
             userId: loginUser.loginId,
             userIds: selectedUsers.map(u => u.loginId),
         }),
         success: function(room) {
             teamChatModal.hide();
             enterRoom(room.id);
+            showChattingList();
         },
         error: function (xhr, status, err) {
             basicAlert({ icon: 'error', text: err.responseJSON?.msg || err.responseText });
