@@ -26,16 +26,20 @@ function sendAlarmToUser(roomId, content) {
         data: { userId: loginUser.loginId,
                 roomId: roomId,
         },
-        success: function(room) {
-            const alarmMessage = {
-                receiver: room.userId,
-                content: content,
-                senderName : loginUser.name,
-                senderProfileImage : loginUser.profileImage,
-                roomId: roomId,
-            };
+        success: function(users) {  // users는 리스트
+            if(users.length === 0) return; // 안전장치
 
-            stompClient.send("/pub/alarm", {}, JSON.stringify(alarmMessage));
+            users.forEach(user => {
+                const alarmMessage = {
+                    receiver: user.userId,
+                    content: content,
+                    senderName: loginUser.name,
+                    senderProfileImage: loginUser.profileImage,
+                    roomId: roomId,
+                };
+
+                stompClient.send("/pub/alarm", {}, JSON.stringify(alarmMessage));
+            });
         },
         error: function(xhr) {
             let msg = xhr.responseJSON ? xhr.responseJSON.msg : xhr.responseText;
