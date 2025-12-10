@@ -5,6 +5,7 @@ import hello.chatting.chatroom.domain.ChatRoomMember;
 import hello.chatting.chatroom.domain.Role;
 import hello.chatting.chatroom.domain.RoomType;
 import hello.chatting.chatroom.dto.ChatRoomReqDto;
+import hello.chatting.chatroom.dto.GroupChatRoomReqDto;
 import hello.chatting.chatroom.dto.RoomWithUsersDto;
 import hello.chatting.chatroom.repository.ChatRoomMemberRepository;
 import hello.chatting.chatroom.repository.ChatRoomRepository;
@@ -33,7 +34,10 @@ public class ChatRoomService {
         ChatRoom room = chatRoomRepository.findPrivateRoom(dto.getUserId(), dto.getFriendId(), RoomType.PRIVATE);
 
         if (room == null) {
-            room = createPrivateRoom(dto);
+            GroupChatRoomReqDto group = new GroupChatRoomReqDto();
+            group.setUserId(dto.getUserId());
+            group.setUserIds(List.of(dto.getFriendId()));
+            room = createRoom(group);
         }
         return room;
     }
@@ -75,6 +79,42 @@ public class ChatRoomService {
         return room;
     }
 
+
+    @Transactional
+    public ChatRoom createRoom(GroupChatRoomReqDto dto) throws Exception {
+
+        ArrayList<String> members = new ArrayList<>(dto.getUserIds());
+        members.add(dto.getUserId());
+        Set<String> partIds = new HashSet<>(members);
+
+        RoomType type = partIds.size() == 2 ? RoomType.PRIVATE : RoomType.GROUP;
+
+        // TODO: roomName 정하기
+        ChatRoom room = ChatRoom.builder()
+                .type(type)
+                .roomName("")
+                .build();
+
+        chatRoomRepository.save(room);
+
+        for (String id : partIds) {
+            chatRoomMemberRepository.save(
+                    ChatRoomMember.builder()
+                            .roomId(room.getId())
+                            .userId(id)
+                            .role(id.equals(dto.getUserId()) ? Role.OWNER : Role.MEMBER)
+                            .build()
+            );
+        }
+
+        if (room == null){
+            throw new Exception("해닫 채팅방을 찾을 수 없습니다.");
+        }
+
+        return room;
+    }
+
+
     public List<ChatRoom> findAllByUserId(String userId) throws Exception {
         List<ChatRoom> allByUserId = chatRoomRepository.findAllByUserId(userId);
         if (allByUserId == null) {
@@ -87,9 +127,6 @@ public class ChatRoomService {
         return chatRoomMemberRepository.findByRoomIdAndUserIdNot(dto.getRoomId(), dto.getUserId());
     }
 
-    public String getFriendName(ChatRoom chatRoom, String userId) {
-        return userService.extractFriendName(chatRoom.getRoomName(), userId);
-    }
 
     public List<RoomWithUsersDto> findRoomByUserIds(List<String> userIds, String requesterId) {
         userIds.add(requesterId);
@@ -110,11 +147,11 @@ public class ChatRoomService {
             String profileImage = (String) row[6];
             Long memberCount = ((Number) row[7]).longValue();
 
-            String groupRoomName = userService.extractFriendName(roomName, requesterId);
 
+            // FIXME: groupName 설정해야 함(RoomWithUserDto)
             if (!userId.equals(requesterId)) {
                 map.computeIfAbsent(roomId, id ->
-                        new RoomWithUsersDto(id, groupRoomName, type, memberCount,new ArrayList<>())
+                        new RoomWithUsersDto(id, roomName, type, memberCount,new ArrayList<>())
                 ).users().add(new RoomWithUsersDto.UserInfo(
                         userId, name, email, profileImage
                 ));

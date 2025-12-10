@@ -118,7 +118,7 @@ $(document).on('click', '#selected-users .btn-close', function() {
     $(`#user-checkbox-${userIdToRemove}`).prop('checked', false);
 });
 
-function groupChatroomCreate(){
+function groupRoom(){
 
     // selectUsers를 가지고 조회 한 번 때려야 함
     $.ajax({
@@ -134,7 +134,7 @@ function groupChatroomCreate(){
                 groupDupliChatModal(room);
             }else {
                 // 업다면 바로 채팅방 설정 팝업
-                groupTeamChatModal(room);
+                groupTeamChatModal();
             }
         },
         error: function (xhr) {
@@ -188,15 +188,30 @@ function enterRoomAndCloseModal(roomId) {
 }
 
 // 새로운 팀 채팅 방 모달
-function groupTeamChatModal(room){
+function groupTeamChatModal() {
     selectFriModal.hide()
+    dupliChatModal.hide()
     teamChatModal.show();
-
-    console.log("없으면 바로 채팅방 설정 팝업3", room);
-
-}
-// 채팅방 만들기
-function groupNewChatRoomCreate(){
-
 }
 
+function groupRoomCreate(){
+
+    $.ajax({
+        url: "/chatRoom/create",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            userId: loginUser.loginId,
+            userIds: selectedUsers.map(u => u.loginId),
+        }),
+        success: function(room) {
+            teamChatModal.hide();
+            enterRoom(room.id);
+        },
+        error: function (xhr, status, err) {
+            basicAlert({ icon: 'error', text: err.responseJSON?.msg || err.responseText });
+        }
+    });
+
+
+}
