@@ -172,7 +172,7 @@ function groupDupliChatModal(rooms) {
             <div class="dupli-chat-item">
                 ${profileImagesHTML}
                 <div class="room-info">
-                    <span class="room-name">${roomName}</span>
+                    <span class="room-name" title="${roomName}">${roomName}</span>
                     <span class="member-count">${memberCount}명</span>
                 </div>
                 <button class="btn btn-primary go-chat-btn" onclick="enterRoomAndCloseModal(${roomId})">채팅방으로 이동</button>
