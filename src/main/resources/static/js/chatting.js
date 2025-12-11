@@ -143,6 +143,8 @@ function handleFileUpload(event) {
     });
 
     event.target.value = ""; // 초기화
+
+    sendAlarmToUser(roomId, "파일을 보냈습니다.")
 }
 
 
