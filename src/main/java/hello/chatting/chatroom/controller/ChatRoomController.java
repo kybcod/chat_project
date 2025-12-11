@@ -55,10 +55,7 @@ public class ChatRoomController {
         List<String> userIds = Optional.ofNullable(dto.getUserIds())
                 .orElse(Collections.emptyList());
 
-        List<RoomWithUsersDto> rooms = chatRoomService.findRoomByUserIds(
-                userIds,
-                dto.getUserId()
-        );
+        List<RoomWithUsersDto> rooms = chatRoomService.findRoomByUserIds(userIds, dto.getUserId());
 
         return ResponseEntity.ok(rooms);
     }
@@ -67,7 +64,7 @@ public class ChatRoomController {
     @PostMapping("/create")
     public ResponseEntity<?> createRoom(@Valid @RequestBody GroupChatRoomReqDto dto) throws Exception {
         ChatRoom room = chatRoomService.createRoom(dto);
-        return ResponseEntity.ok(room);
+        return ResponseEntity.ok(ChatRoomDto.toDto(room));
     }
 
 }
