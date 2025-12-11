@@ -143,7 +143,6 @@ public class ChatRoomService {
             Long memberCount = ((Number) row[7]).longValue();
 
             String groupRoomName = convertDisplayRoomName(roomId, loginUserId);
-            log.info("grggggggggg  ; {}", groupRoomName);
 
             if (!userId.equals(loginUserId)) {
                 map.computeIfAbsent(roomId, id ->
