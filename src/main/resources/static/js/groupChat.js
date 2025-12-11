@@ -93,7 +93,7 @@ function selectChoose(checkbox, user) {
 
     if (isChecked) {
         if (!selectedUsers.some(u => u.id === user.id)) {
-            selectedUsers.push({ id: user.id, loginId: user.loginId, name: user.name });
+            selectedUsers.push({ id: user.id, loginId: user.loginId, name: user.name, profileImage: user.profileImage });
         }
     } else {
         selectedUsers = selectedUsers.filter(u => u.id !== user.id);
@@ -162,7 +162,7 @@ function groupDupliChatModal(rooms) {
 
         // 프로필 이미지 (최대 4개)
         const userCount = users.length > 4 ? 4 : users.length;
-        let profileImagesHTML = `<div class="profile-images user-count-${userCount}">`;
+        let profileImagesHTML = `<div class="profile-images WH52 user-count-${userCount}">`;
         users.slice(0, 4).forEach(user => {
             profileImagesHTML += `<img src="${user.profileImage || '/images/orgProfile.png'}" alt="${user.name}">`;
         });
@@ -192,6 +192,27 @@ function groupTeamChatModal() {
     selectFriModal.hide()
     dupliChatModal.hide()
     teamChatModal.show();
+
+    const teamImageContainer = $('.team-chat-profileImage');
+    teamImageContainer.empty();
+
+    let profileHTML;
+
+    selectedUsers.forEach(user => {
+
+        // 프로필 이미지 (최대 4개)
+        const userCount = selectedUsers.length > 4 ? 4 : selectedUsers.length;
+        profileHTML = `<div class="profile-images WH100 user-count-${userCount}">`;
+        selectedUsers.slice(0, 4).forEach(user => {
+            profileHTML += `<img src="${user.profileImage || '/images/orgProfile.png'}" alt="${user.name}">`;
+        });
+        profileHTML += '</div>';
+
+
+    });
+
+    teamImageContainer.append(profileHTML);
+
 }
 
 function groupRoomCreate(){
