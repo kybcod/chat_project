@@ -105,6 +105,7 @@ function sendMessage() {
         type: 'TALK',
         roomId: roomId,
         sender: loginUser.loginId,
+        senderName: loginUser.name,
         message: msgInputVal
     };
 
@@ -149,20 +150,31 @@ function handleFileUpload(event) {
 
 
 function showMessage(message) {
-    let msgDiv = $('<div>').addClass('chat-message');
-    msgDiv.addClass(message.sender === loginUser.loginId ? 'self' : 'other');
+    const isSelf = message.sender === loginUser.loginId;
 
-    // 메시지 내용
+    let containerDiv = $('<div>').addClass('chat-message-container');
+
+    // 상대방 이름 (other일 때만)
+    if (!isSelf) {
+        let nameDiv = $('<div>')
+            .addClass('sender-name')
+            .text(message.senderName); // 서버에서 내려주는 이름 필드 사용
+        containerDiv.append(nameDiv);
+    }
+
+    // 메시지 div
+    let msgDiv = $('<div>').addClass('chat-message');
+    msgDiv.addClass(isSelf ? 'self' : 'other');
+
     let contentDiv = $('<div>').addClass('msg-content');
 
     if (message.fileUrl) {
         if (message.fileType && message.fileType.startsWith('image/')) {
-            // 이미지 파일이면 미리보기
             let img = $('<img>')
                 .attr('src', message.fileUrl)
                 .addClass('chat-image')
                 .css({ maxWidth: '200px', cursor: 'pointer', backgroundColor: 'white' })
-                .on('click', function() {
+                .on('click', function () {
                     window.open(message.fileUrl, '_blank');
                 })
                 .on('load', function () {
@@ -170,7 +182,6 @@ function showMessage(message) {
                 });
             contentDiv.append(img);
         } else {
-            // 이미지 외 파일은 다운로드 링크
             let link = $('<a>')
                 .attr('href', message.fileUrl)
                 .attr('target', '_blank')
@@ -179,16 +190,19 @@ function showMessage(message) {
             contentDiv.append(link);
         }
     } else {
-        // 일반 텍스트 메시지
         contentDiv.text(message.message);
     }
 
     msgDiv.append(contentDiv);
 
+    // 상위 컨테이너에 메시지 div 추가
+    containerDiv.append(msgDiv);
+
     // 채팅박스에 추가 후 스크롤
-    $('#chatBox').append(msgDiv);
+    $('#chatBox').append(containerDiv);
     $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
 }
+
 
 
 
@@ -244,6 +258,7 @@ function enterRoom(room_id) {
             addTypingBubble(sender);
             typingUsers.set(sender, Date.now());
         } else {
+            console.log("msssg", msg)
             removeTypingBubble(sender);
             showMessage(msg);
             showChattingList();
@@ -263,6 +278,7 @@ function messageOutput(roomId) {
         type: "GET",
         success: function(messages) {
             messages.forEach(function(message) {
+                console.log("222", message);
                 showMessage(message);
             });
         },

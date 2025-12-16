@@ -46,10 +46,7 @@ public class ChatController {
     @GetMapping("/chat/messages/{roomId}")
     @ResponseBody
     public ResponseEntity<?> getMessages(@PathVariable Long roomId) {
-        List<ChatMessageDto> chatMessageDtoList = chatService.findByRoomIdOrderByCreatedAt(roomId)
-                .stream()
-                .map(ChatMessageDto::toDto)
-                .collect(Collectors.toList());
+        List<ChatMessageDto> chatMessageDtoList = chatService.findByRoomIdOrderByCreatedAt(roomId);
         return ResponseEntity.ok(chatMessageDtoList);
     }
 

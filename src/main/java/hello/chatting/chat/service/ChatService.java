@@ -3,6 +3,8 @@ package hello.chatting.chat.service;
 import hello.chatting.chat.domain.ChatMessage;
 import hello.chatting.chat.dto.ChatMessageDto;
 import hello.chatting.chat.repository.ChatRepository;
+import hello.chatting.user.domain.User;
+import hello.chatting.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,6 +21,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,6 +32,7 @@ public class ChatService {
     private String uploadDir;
 
     private final ChatRepository chatRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void save(ChatMessage chatMessage) {
@@ -39,9 +42,24 @@ public class ChatService {
     }
 
     @Transactional(readOnly = true)
-    public List<ChatMessage> findByRoomIdOrderByCreatedAt(Long roomId) {
-        return chatRepository.findByRoomIdOrderByCreatedAt(roomId);
+    public List<ChatMessageDto> findByRoomIdOrderByCreatedAt(Long roomId) {
+        List<ChatMessage> roomList = chatRepository.findByRoomIdOrderByCreatedAt(roomId);
+
+        return roomList.stream()
+                .map(chatMessage -> {
+                    String senderName = userRepository.findByLoginId(chatMessage.getSender())
+                            .map(User::getName)
+                            .orElse(chatMessage.getSender());
+
+                    return ChatMessageDto.toDto(chatMessage)
+                            .toBuilder()
+                            .senderName(senderName)
+                            .build();
+
+                })
+                .collect(Collectors.toList());
     }
+
 
     /**
      * 채팅용 파일 업로드

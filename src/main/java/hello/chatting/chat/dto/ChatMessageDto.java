@@ -17,6 +17,7 @@ public class ChatMessageDto {
     private Long id;
     private Long roomId;
     private String sender;
+    private String senderName;
     private String message;
     private String type;
     private String fileUrl;
