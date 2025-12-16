@@ -258,7 +258,6 @@ function enterRoom(room_id) {
             addTypingBubble(sender);
             typingUsers.set(sender, Date.now());
         } else {
-            console.log("msssg", msg)
             removeTypingBubble(sender);
             showMessage(msg);
             showChattingList();
@@ -278,7 +277,6 @@ function messageOutput(roomId) {
         type: "GET",
         success: function(messages) {
             messages.forEach(function(message) {
-                console.log("222", message);
                 showMessage(message);
             });
         },
