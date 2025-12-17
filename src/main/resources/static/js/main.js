@@ -96,7 +96,6 @@ function showChattingList() {
             $container.empty(); // 초기화
 
             chattingRooms.forEach(room => {
-                console.log("RRRRRR", room);
                 const $item = $(`
                     <div class="chatting-item chatting-display">
                         <span class="room-name">${room.roomName}</span>

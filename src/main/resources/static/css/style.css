@@ -123,3 +123,10 @@ main#main-content {flex: 1;background-color: #343541;color: #fff;padding: 20px;o
 .WH100{width: 100px;height: 100px;}
 
 .team-chat-profileImage{display: flex;justify-content: center;align-items: center;}
+
+.chat-event-message {
+    text-align: center;
+    color: #aaa;
+    font-size: 12px;
+    margin: 10px 0;
+}

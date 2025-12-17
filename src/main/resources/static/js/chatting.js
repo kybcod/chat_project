@@ -28,7 +28,7 @@ $(document).ready(function() {
         }
 
         // 채팅박스 스크롤
-        $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+        scrollToBottom();
 
         // 타이핑 이벤트 전송
         sendTyping();
@@ -65,7 +65,7 @@ function addTypingBubble(sender) {
     msgDiv.append(contentDiv);
 
     $('#chatBox').append(msgDiv);
-    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+    scrollToBottom();
 }
 
 // '입력 중' 버블 제거
@@ -148,62 +148,101 @@ function handleFileUpload(event) {
     sendAlarmToUser(roomId, "파일을 보냈습니다.")
 }
 
-
 function showMessage(message) {
+    switch (message.type) {
+        case 'LEAVE':
+        case 'INVITE':
+            renderEventMsg(message);
+            break;
+
+        case 'FILE':
+            renderChatMsg(message, renderFileContent);
+            break;
+
+        default:
+            renderChatMsg(message, renderTextContent);
+            break;
+    }
+}
+
+function renderEventMsg(message) {
+    const eventDiv = $('<div>')
+        .addClass('chat-event-message')
+        .text(message.message);
+
+    $('#chatBox').append(eventDiv);
+    scrollToBottom();
+}
+
+function renderChatMsg(message, contentRenderer) {
     const isSelf = message.sender === loginUser.loginId;
 
-    let containerDiv = $('<div>').addClass('chat-message-container');
+    const containerDiv = $('<div>').addClass('chat-message-container');
 
-    // 상대방 이름 (other일 때만)
     if (!isSelf) {
-        let nameDiv = $('<div>')
-            .addClass('sender-name')
-            .text(message.senderName); // 서버에서 내려주는 이름 필드 사용
-        containerDiv.append(nameDiv);
+        containerDiv.append(
+            $('<div>')
+                .addClass('sender-name')
+                .text(message.senderName)
+        );
     }
 
-    // 메시지 div
-    let msgDiv = $('<div>').addClass('chat-message');
-    msgDiv.addClass(isSelf ? 'self' : 'other');
+    const msgDiv = $('<div>')
+        .addClass('chat-message')
+        .addClass(isSelf ? 'self' : 'other');
 
-    let contentDiv = $('<div>').addClass('msg-content');
+    const contentDiv = $('<div>').addClass('msg-content');
 
-    if (message.fileUrl) {
-        if (message.fileType && message.fileType.startsWith('image/')) {
-            let img = $('<img>')
-                .attr('src', message.fileUrl)
-                .addClass('chat-image')
-                .css({ maxWidth: '200px', cursor: 'pointer', backgroundColor: 'white' })
-                .on('click', function () {
-                    window.open(message.fileUrl, '_blank');
-                })
-                .on('load', function () {
-                    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
-                });
-            contentDiv.append(img);
-        } else {
-            let link = $('<a>')
-                .attr('href', message.fileUrl)
-                .attr('target', '_blank')
-                .text(message.fileName || '파일 다운로드')
-                .addClass('file-link');
-            contentDiv.append(link);
-        }
-    } else {
-        contentDiv.text(message.message);
-    }
+    contentRenderer(message, contentDiv); // TALK, FILE 따로 렌더링
 
     msgDiv.append(contentDiv);
-
-    // 상위 컨테이너에 메시지 div 추가
     containerDiv.append(msgDiv);
 
-    // 채팅박스에 추가 후 스크롤
+
     $('#chatBox').append(containerDiv);
-    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+    scrollToBottom();
+}
+
+// 기본 TALK 타입
+function renderTextContent(message, contentDiv) {
+    contentDiv.text(message.message);
+}
+
+// FILE 타입 일 때 렌더링
+function renderFileContent(message, contentDiv) {
+    if (!message.fileUrl) return;
+
+    if (message.fileType?.startsWith('image/')) {
+        const img = $('<img>')
+            .attr('src', message.fileUrl)
+            .addClass('chat-image')
+            .css({
+                maxWidth: '200px',
+                cursor: 'pointer',
+                backgroundColor: 'white'
+            })
+            .on('click', () => window.open(message.fileUrl, '_blank'))
+            .on('load', scrollToBottom);
+
+        contentDiv.append(img);
+    } else {
+        const link = $('<a>')
+            .attr({
+                href: message.fileUrl,
+                target: '_blank'
+            })
+            .text(message.fileName || '파일 다운로드')
+            .addClass('file-link');
+
+        contentDiv.append(link);
+    }
 }
 
 
+function scrollToBottom() {
+    const chatBox = $('#chatBox');
+    chatBox.scrollTop(chatBox[0].scrollHeight);
+}
 
 
 function openChatWith(friendLoginId) {
