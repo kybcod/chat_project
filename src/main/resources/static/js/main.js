@@ -56,42 +56,34 @@ function showFriendList() {
         url: "/users",
         type: "GET",
         success: function (friends) {
-            const containerFri = document.querySelector(".friends-list");
-            containerFri.innerHTML = "";
+            const $containerFri = $(".friends-list");
+            $containerFri.empty(); // 기존 내용 삭제
 
             friends
                 .filter(fri => fri.loginId !== loginUser.loginId)
                 .forEach(fri => {
-                const div = document.createElement("div");
-                div.classList.add("friends-item");
+                    const friendHTML = `
+                        <div class="friends-item">
+                            <img src="${fri.profileImage || '/images/orgProfile.png'}" alt="${fri.name}" class="friends-profile-img" />
+                            <span class="friends-name">${fri.name}</span>
+                        </div>
+                    `;
+                    const $friendDiv = $(friendHTML);
 
-                // 프로필 이미지
-                const img = document.createElement("img");
-                img.src = fri.profileImage || "/images/orgProfile.png";
-                img.alt = fri.name;
-                img.classList.add("friends-profile-img");
+                    // jQuery로 이벤트 연결
+                    $friendDiv.on("dblclick", function() {
+                        openChatWith(fri.loginId);
+                    });
 
-                // 이름
-                const nameSpan = document.createElement("span");
-                nameSpan.textContent = fri.name;
-                nameSpan.classList.add("friends-name");
-
-                // div 구성
-                div.appendChild(img);
-                div.appendChild(nameSpan);
-
-                div.addEventListener("dblclick", function() {
-                    openChatWith(fri.loginId);
+                    $containerFri.append($friendDiv);
                 });
-
-                containerFri.appendChild(div);
-            });
         },
         error: function (xhr, status, err) {
             basicAlert({ icon: 'error', text: err.responseJSON?.msg || err.responseText });
         }
     });
 }
+
 
 
 function showChattingList() {
@@ -104,6 +96,7 @@ function showChattingList() {
             $container.empty(); // 초기화
 
             chattingRooms.forEach(room => {
+                console.log("RRRRRR", room);
                 const $item = $(`
                     <div class="chatting-item chatting-display">
                         <span class="room-name">${room.roomName}</span>

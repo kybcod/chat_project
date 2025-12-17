@@ -4,9 +4,7 @@ import hello.chatting.chatroom.domain.ChatRoom;
 import hello.chatting.chatroom.domain.ChatRoomMember;
 import hello.chatting.chatroom.domain.Role;
 import hello.chatting.chatroom.domain.RoomType;
-import hello.chatting.chatroom.dto.ChatRoomReqDto;
-import hello.chatting.chatroom.dto.GroupChatRoomReqDto;
-import hello.chatting.chatroom.dto.RoomWithUsersDto;
+import hello.chatting.chatroom.dto.*;
 import hello.chatting.chatroom.repository.ChatRoomMemberRepository;
 import hello.chatting.chatroom.repository.ChatRoomRepository;
 import hello.chatting.user.domain.User;
@@ -170,6 +168,13 @@ public class ChatRoomService {
         return roomName;
     }
 
+    @Transactional
+    public void deleteRoom(DeleteChatRoomReqDto dto) throws Exception {
+        ChatRoomMember member = chatRoomMemberRepository.findByRoomIdAndUserId(dto.getRoomId(), dto.getUserId())
+                .orElseThrow(() -> new Exception("해당 멤버를 찾을 수 없습니다."));
 
+        member.setActive(false);
+        chatRoomMemberRepository.save(member);
+    }
 }
 

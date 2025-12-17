@@ -287,5 +287,37 @@ function messageOutput(roomId) {
 }
 
 function exitRoom(room){
-    console.log("room",room);
+
+    $.ajax({
+        url: "/chatRoom",
+        type: "DELETE",
+        contentType: "application/json",
+        data : JSON.stringify({
+            roomId: room.id,
+            userId: loginUser.loginId,
+            type : room.type
+        }),
+        success: function() {
+            exitAndInviteMessage("LEAVE", loginUser.name)
+        },
+        error: function(err) {
+            console.error("메시지 불러오기 실패", err);
+        }
+    });
+}
+
+// 메세지 전송
+function exitAndInviteMessage(type, name) {
+
+    var message = {
+        type: type,
+        roomId: roomId,
+        sender: loginUser.loginId,
+        senderName: name,
+        message: type === "LEAVE" ? `${name} 님이 채팅방에 나가셨습니다.` : `${name} 님이 채팅방에 초대되었습니다.`,
+    };
+
+    stompClient.send("/pub/chat/message", {}, JSON.stringify(message));
+    showChattingList();
+
 }

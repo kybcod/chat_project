@@ -67,4 +67,10 @@ public class ChatRoomController {
         return ResponseEntity.ok(ChatRoomDto.toDto(room));
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteRoom(@RequestBody DeleteChatRoomReqDto dto) throws Exception {
+        chatRoomService.deleteRoom(dto);
+        return ResponseEntity.ok().build();
+    }
+
 }

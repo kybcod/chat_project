@@ -11,5 +11,4 @@ import lombok.*;
 public class DeleteChatRoomReqDto {
     private Long roomId;
     private String userId;
-    private String type; // PRIVATE, GROUP
 }

@@ -1,17 +1,14 @@
 package hello.chatting.chatroom.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "chat_room_member")
-@Builder
-@Getter
+@Builder(toBuilder = true)
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatRoomMember {
