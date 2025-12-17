@@ -21,6 +21,8 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
         WHERE r.type = :type
           AND m1.userId = :me
           AND m2.userId = :friendId
+          AND m1.active = true
+          AND m2.active = true
     """)
     ChatRoom findPrivateRoom(String me, String friendId, RoomType type);
 
@@ -29,6 +31,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
             JOIN ChatRoomMember m ON cr.id = m.roomId
             LEFT JOIN ChatMessage cm ON cr.id = cm.roomId
         WHERE m.userId = :userId
+            AND m.active = true
         GROUP BY cr.id
         ORDER BY cr.createdAt DESC,
                 COALESCE(MAX(cm.createdAt), '1970-01-01T00:00:00') DESC

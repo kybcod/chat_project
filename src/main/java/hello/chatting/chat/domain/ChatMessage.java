@@ -24,6 +24,7 @@ public class ChatMessage {
     private String sender;
 
     private String message;
+    private String type;
     private String fileUrl;
     private String fileName;
     private String fileType;

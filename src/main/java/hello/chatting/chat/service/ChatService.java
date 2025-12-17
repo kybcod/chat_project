@@ -94,6 +94,7 @@ public class ChatService {
         ChatMessage chatMessage = ChatMessage.builder()
                 .roomId(roomId)
                 .sender(sender)
+                .type("FILE")
                 .fileUrl(fileUrl)
                 .fileName(originalFilename)
                 .fileType(file.getContentType())

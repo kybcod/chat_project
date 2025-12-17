@@ -25,6 +25,10 @@ public class ChatRoomMember {
     @Column(nullable = false)
     private String userId;
 
+    @Column
+    @Builder.Default
+    private Boolean active = true;
+
     @Column(length = 20)
     @Builder.Default
     @Enumerated(EnumType.STRING)
