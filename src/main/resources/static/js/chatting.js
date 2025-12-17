@@ -286,3 +286,6 @@ function messageOutput(roomId) {
     });
 }
 
+function exitRoom(room){
+    console.log("room",room);
+}

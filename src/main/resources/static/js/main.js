@@ -94,30 +94,42 @@ function showFriendList() {
 }
 
 
-function showChattingList(){
+function showChattingList() {
     $.ajax({
         url: "/chatRoom/list",
         type: "GET",
         data: { userId: loginUser.loginId },
         success: function (chattingRooms) {
-            const container = document.querySelector(".chatting-list");
-            container.innerHTML = ""; // 초기화
+            const $container = $(".chatting-list");
+            $container.empty(); // 초기화
 
             chattingRooms.forEach(room => {
-                const div = document.createElement("div");
-                div.classList.add("chatting-item");
-                div.textContent = room.roomName;
-                div.addEventListener("dblclick", function() {
+                const $item = $(`
+                    <div class="chatting-item chatting-display">
+                        <span class="room-name">${room.roomName}</span>
+                        <i class="bi bi-trash trash-icon"></i>
+                    </div>
+                `);
+
+                $item.on("dblclick", function () {
                     enterRoom(room.id);
                 });
 
-                container.appendChild(div);
+                $item.find(".trash-icon").on("click", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    exitRoom(room);
+                });
+
+                $container.append($item);
             });
         },
         error: function (xhr, status, err) {
-            basicAlert({ icon: 'error', text: err.responseJSON?.msg || err.responseText });
+            basicAlert({
+                icon: 'error',
+                text: err.responseJSON?.msg || err.responseText
+            });
         }
     });
-
-
 }
+
