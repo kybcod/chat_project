@@ -42,8 +42,8 @@ public class ChatService {
     }
 
     @Transactional(readOnly = true)
-    public List<ChatMessageDto> findByRoomIdOrderByCreatedAt(Long roomId) {
-        List<ChatMessage> roomList = chatRepository.findByRoomIdOrderByCreatedAt(roomId);
+    public List<ChatMessageDto> getMessageByUserId(ChatMessageDto dto) {
+        List<ChatMessage> roomList = chatRepository.findMessagesAfterLeave(dto.getRoomId(), dto.getSender());
 
         return roomList.stream()
                 .map(chatMessage -> {

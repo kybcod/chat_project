@@ -312,8 +312,13 @@ function messageOutput(roomId) {
     $('#chatBox').empty();
 
     $.ajax({
-        url: "/chat/messages/" + roomId,
-        type: "GET",
+        url: "/chat/messages",
+        type: "POST",
+        contentType: "application/json",
+        data : JSON.stringify({
+            roomId,
+            sender: loginUser.loginId,
+        }),
         success: function(messages) {
             messages.forEach(function(message) {
                 showMessage(message);

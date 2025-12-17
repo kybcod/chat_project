@@ -26,6 +26,8 @@ public class ChatRoomMember {
     @Builder.Default
     private Boolean active = true;
 
+    private LocalDateTime activeAt;
+
     @Column(length = 20)
     @Builder.Default
     @Enumerated(EnumType.STRING)

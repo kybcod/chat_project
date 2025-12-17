@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -174,6 +175,7 @@ public class ChatRoomService {
                 .orElseThrow(() -> new Exception("해당 멤버를 찾을 수 없습니다."));
 
         member.setActive(false);
+        member.setActiveAt(LocalDateTime.now());
         chatRoomMemberRepository.save(member);
     }
 }

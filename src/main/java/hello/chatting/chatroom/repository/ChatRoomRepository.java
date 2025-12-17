@@ -21,8 +21,6 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
         WHERE r.type = :type
           AND m1.userId = :me
           AND m2.userId = :friendId
-          AND m1.active = true
-          AND m2.active = true
     """)
     ChatRoom findPrivateRoom(String me, String friendId, RoomType type);
 

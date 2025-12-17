@@ -43,10 +43,10 @@ public class ChatController {
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 
-    @GetMapping("/chat/messages/{roomId}")
+    @PostMapping("/chat/messages")
     @ResponseBody
-    public ResponseEntity<?> getMessages(@PathVariable Long roomId) {
-        List<ChatMessageDto> chatMessageDtoList = chatService.findByRoomIdOrderByCreatedAt(roomId);
+    public ResponseEntity<?> getMessages(@RequestBody ChatMessageDto dto) {
+        List<ChatMessageDto> chatMessageDtoList = chatService.getMessageByUserId(dto);
         return ResponseEntity.ok(chatMessageDtoList);
     }
 
