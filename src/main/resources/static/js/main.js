@@ -105,7 +105,15 @@ function showChattingList() {
                     </div>
                 `);
 
+                // 현재 입장한 방이면 selected 클래스 추가
+                if (room.id === roomId) {
+                    $item.addClass("selected-room");
+                }
+
                 $item.on("dblclick", function () {
+                    // 즉각적인 시각적 피드백
+                    $(".chatting-item").removeClass("selected-room");
+                    $(this).addClass("selected-room");
                     enterRoom(room.id);
                 });
 
