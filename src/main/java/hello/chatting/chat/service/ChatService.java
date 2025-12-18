@@ -46,7 +46,6 @@ public class ChatService {
     @Transactional
     public void save(ChatMessage chatMessage) throws Exception {
 
-        log.info("1. chatMessage : {}", chatMessage.toString());
         // roomId에 대해서 ROOMTYPE에 조회해서 ROOMTYPE이 PRIVATE가 맞다면 그 떄 조회
         Long roomId = chatMessage.getRoomId();
         ChatRoom room = chatRoomRepository.findById(roomId)

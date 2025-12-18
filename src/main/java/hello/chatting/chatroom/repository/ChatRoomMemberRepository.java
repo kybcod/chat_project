@@ -2,6 +2,7 @@ package hello.chatting.chatroom.repository;
 
 import hello.chatting.chatroom.domain.ChatRoom;
 import hello.chatting.chatroom.domain.ChatRoomMember;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +13,8 @@ import java.util.Optional;
 
 @Repository
 public interface ChatRoomMemberRepository extends JpaRepository<ChatRoomMember, Long> {
-    List<ChatRoomMember> findByRoomIdAndUserIdNot(Long roomId, String userId);
+
+    List<ChatRoomMember> findByRoomIdAndActiveAndUserIdNot(Long roomId, boolean active, String userId);
 
     @Query(value = """
         SELECT 

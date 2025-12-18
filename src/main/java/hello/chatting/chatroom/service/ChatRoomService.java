@@ -118,7 +118,7 @@ public class ChatRoomService {
 
 
     public List<ChatRoomMember> findByRoomIdAndUserIdNot(ChatRoomReqDto dto) {
-        return chatRoomMemberRepository.findByRoomIdAndUserIdNot(dto.getRoomId(), dto.getUserId());
+        return chatRoomMemberRepository.findByRoomIdAndActiveAndUserIdNot(dto.getRoomId(), true, dto.getUserId());
     }
 
 
