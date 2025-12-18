@@ -195,6 +195,7 @@ function groupTeamChatModal() {
 
     const teamImageContainer = $('.team-chat-profileImage');
     teamImageContainer.empty();
+    $("#group-name").val("");
 
     let profileHTML;
 
