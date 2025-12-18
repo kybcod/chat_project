@@ -348,7 +348,21 @@ function exitRoom(room){
             type : room.type
         }),
         success: function() {
-            exitAndInviteMessage("LEAVE", loginUser.name, room.type)
+            // 1. 본인 화면에 메시지 먼저 보여주기
+            exitAndInviteMessage("LEAVE", loginUser.name, room.type);
+
+            // 2. 채팅방 UI 업데이트
+            $('#chatPlaceholder').show();
+            $('#chatBox').hide();
+            $('#chat-input-area').hide();
+
+            // 3. 구독 끊기
+            if (chatSubscription) {
+                chatSubscription.unsubscribe();
+                chatSubscription = null;
+            }
+
+            roomId = null;
         },
         error: function(err) {
             console.error("메시지 불러오기 실패", err);
@@ -356,7 +370,7 @@ function exitRoom(room){
     });
 }
 
-// 메세지 전송
+// 나가기/초대하기 메세지 전송
 function exitAndInviteMessage(type, name, roomType) {
 
     var message = {

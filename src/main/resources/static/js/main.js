@@ -12,6 +12,8 @@ function connect() {
             // 해당 유저가 해당 채팅방에 들어가 있다면 알림X
             if(roomId === alarm.roomId) return;
             toastAlert(alarm);
+
+            showChattingList(); // TODO: 더 좋은 방향이 있을지 생각해 봐야 함
         });
     });
 }
