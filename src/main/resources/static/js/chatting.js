@@ -337,37 +337,45 @@ function messageOutput(roomId) {
 }
 
 function exitRoom(room){
+    confirmAlert({ icon: 'success', text: "정말로 채팅방을 나가시겠습니까?" })
+        .then(result => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/chatRoom",
+                    type: "DELETE",
+                    contentType: "application/json",
+                    data : JSON.stringify({
+                        roomId: room.id,
+                        userId: loginUser.loginId,
+                        type : room.type
+                    }),
+                    success: function() {
+                        // 1. 본인 화면에 메시지 먼저 보여주기
+                        exitAndInviteMessage("LEAVE", loginUser.name, room.type);
 
-    $.ajax({
-        url: "/chatRoom",
-        type: "DELETE",
-        contentType: "application/json",
-        data : JSON.stringify({
-            roomId: room.id,
-            userId: loginUser.loginId,
-            type : room.type
-        }),
-        success: function() {
-            // 1. 본인 화면에 메시지 먼저 보여주기
-            exitAndInviteMessage("LEAVE", loginUser.name, room.type);
+                        // 2. 채팅방 UI 업데이트
+                        $('#chatPlaceholder').show();
+                        $('#chatBox').hide();
+                        $('#chat-input-area').hide();
 
-            // 2. 채팅방 UI 업데이트
-            $('#chatPlaceholder').show();
-            $('#chatBox').hide();
-            $('#chat-input-area').hide();
+                        // 3. 구독 끊기
+                        if (chatSubscription) {
+                            chatSubscription.unsubscribe();
+                            chatSubscription = null;
+                        }
 
-            // 3. 구독 끊기
-            if (chatSubscription) {
-                chatSubscription.unsubscribe();
-                chatSubscription = null;
+                        roomId = null;
+                    },
+                    error: function(err) {
+                        console.error("메시지 불러오기 실패", err);
+                    }
+                });
             }
+        })
+        .catch(error => console.error(error));
 
-            roomId = null;
-        },
-        error: function(err) {
-            console.error("메시지 불러오기 실패", err);
-        }
-    });
+
+
 }
 
 // 나가기/초대하기 메세지 전송
