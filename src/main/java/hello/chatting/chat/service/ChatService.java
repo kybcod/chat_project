@@ -46,24 +46,22 @@ public class ChatService {
     @Transactional
     public void save(ChatMessage chatMessage) throws Exception {
 
+        log.info("1. chatMessage : {}", chatMessage.toString());
         // roomId에 대해서 ROOMTYPE에 조회해서 ROOMTYPE이 PRIVATE가 맞다면 그 떄 조회
         Long roomId = chatMessage.getRoomId();
         ChatRoom room = chatRoomRepository.findById(roomId)
                 .orElseThrow(() -> new Exception("채팅방을 찾을 수 없습니다."));
 
-
         if (room.getType() == RoomType.PRIVATE){
 
-            // 1:1 방인지 확인 후 상대 멤버 조회
-            ChatRoomMember other = chatRoomMemberRepository
-                    .findByRoomIdAndUserIdNot(roomId, chatMessage.getSender())
-                    .stream()
-                    .findFirst() // 1:1이면 무조건 한 명
-                    .orElse(null);
+            // 1:1 방 멤버 조회
+            List<ChatRoomMember> members = chatRoomMemberRepository.findByRoomId(roomId);
 
-            if (other != null && !other.getActive()) {
-                other.setActive(true);
-                chatRoomMemberRepository.save(other);
+            for (ChatRoomMember member : members) {
+                if (!member.getActive()) {
+                    member.setActive(true);
+                    chatRoomMemberRepository.save(member);
+                }
             }
 
         }

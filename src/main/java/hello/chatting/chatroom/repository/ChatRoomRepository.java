@@ -31,8 +31,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
         WHERE m.userId = :userId
             AND m.active = true
         GROUP BY cr.id
-        ORDER BY cr.createdAt DESC,
-                COALESCE(MAX(cm.createdAt), '1970-01-01T00:00:00') DESC
+        ORDER BY GREATEST(coalesce(MAX(cm.createdAt),'1970-01-01'), cr.createdAt) DESC
     """)
     List<ChatRoom> findAllByUserId(String userId);
 
