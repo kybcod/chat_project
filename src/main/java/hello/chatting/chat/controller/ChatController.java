@@ -32,7 +32,7 @@ public class ChatController {
     }
 
     @MessageMapping("chat/message")
-    public void message(ChatMessageDto message) {
+    public void message(ChatMessageDto message) throws Exception {
         ChatMessage entity = ChatMessageDto.toEntity(message);
         chatService.save(entity);
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
