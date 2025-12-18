@@ -149,6 +149,7 @@ function handleFileUpload(event) {
 }
 
 function showMessage(message) {
+
     switch (message.type) {
         case 'LEAVE':
         case 'INVITE':
@@ -165,14 +166,6 @@ function showMessage(message) {
     }
 }
 
-function renderEventMsg(message) {
-    const eventDiv = $('<div>')
-        .addClass('chat-event-message')
-        .text(message.message);
-
-    $('#chatBox').append(eventDiv);
-    scrollToBottom();
-}
 
 function renderChatMsg(message, contentRenderer) {
     const isSelf = message.sender === loginUser.loginId;
@@ -200,6 +193,19 @@ function renderChatMsg(message, contentRenderer) {
 
 
     $('#chatBox').append(containerDiv);
+    scrollToBottom();
+}
+
+// LEAVE, INVITE 일 때 채팅창 표시
+function renderEventMsg(message) {
+    if (message.roomType === "PRIVATE"){
+        return;
+    }
+    const eventDiv = $('<div>')
+        .addClass('chat-event-message')
+        .text(message.message);
+
+    $('#chatBox').append(eventDiv);
     scrollToBottom();
 }
 
@@ -342,7 +348,7 @@ function exitRoom(room){
             type : room.type
         }),
         success: function() {
-            exitAndInviteMessage("LEAVE", loginUser.name)
+            exitAndInviteMessage("LEAVE", loginUser.name, room.type)
         },
         error: function(err) {
             console.error("메시지 불러오기 실패", err);
@@ -351,13 +357,14 @@ function exitRoom(room){
 }
 
 // 메세지 전송
-function exitAndInviteMessage(type, name) {
+function exitAndInviteMessage(type, name, roomType) {
 
     var message = {
         type: type,
         roomId: roomId,
         sender: loginUser.loginId,
         senderName: name,
+        roomType,
         message: type === "LEAVE" ? `${name} 님이 채팅방에 나가셨습니다.` : `${name} 님이 채팅방에 초대되었습니다.`,
     };
 

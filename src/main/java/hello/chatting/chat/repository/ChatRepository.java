@@ -13,15 +13,13 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
     @Query("""
         SELECT m
         FROM ChatMessage m
-        JOIN ChatRoomMember crm
-          ON m.roomId = crm.roomId
+            JOIN FETCH m.chatRoom
+            JOIN ChatRoomMember crm ON m.roomId = crm.roomId
         WHERE m.roomId = :roomId
           AND crm.userId = :userId
-          AND (
-               crm.activeAt IS NULL
-               OR m.createdAt > crm.activeAt
-          )
+          AND (crm.activeAt IS NULL OR m.createdAt > crm.activeAt)
         ORDER BY m.createdAt
     """)
     List<ChatMessage> findMessagesAfterLeave(Long roomId, String userId);
+
 }

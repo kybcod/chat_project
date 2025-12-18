@@ -75,9 +75,9 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public List<ChatMessageDto> getMessageByUserId(ChatMessageDto dto) {
-        List<ChatMessage> roomList = chatRepository.findMessagesAfterLeave(dto.getRoomId(), dto.getSender());
+        List<ChatMessage> messages = chatRepository.findMessagesAfterLeave(dto.getRoomId(), dto.getSender());
 
-        return roomList.stream()
+        return messages.stream()
                 .map(chatMessage -> {
                     String senderName = userRepository.findByLoginId(chatMessage.getSender())
                             .map(User::getName)

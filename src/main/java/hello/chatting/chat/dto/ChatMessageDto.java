@@ -1,12 +1,13 @@
 package hello.chatting.chat.dto;
 
 import hello.chatting.chat.domain.ChatMessage;
-import hello.chatting.chatroom.domain.ChatRoom;
-import hello.chatting.chatroom.dto.ChatRoomDto;
+import hello.chatting.chatroom.domain.RoomType;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Getter
 @Builder(toBuilder = true)
 @AllArgsConstructor
@@ -24,6 +25,8 @@ public class ChatMessageDto {
     private String fileName;
     private String fileType;
     private LocalDateTime createdAt;
+    private RoomType roomType;
+
 
     // Entity → DTO 변환 (화면)
     public static ChatMessageDto toDto(ChatMessage chatMessage) {
@@ -35,6 +38,7 @@ public class ChatMessageDto {
                 .fileName(chatMessage.getFileName())
                 .fileType(chatMessage.getFileType())
                 .message(chatMessage.getMessage())
+                .roomType(chatMessage.getChatRoom() != null ? chatMessage.getChatRoom().getType() : null)
                 .build();
     }
 

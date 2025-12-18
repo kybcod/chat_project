@@ -1,5 +1,6 @@
 package hello.chatting.chatroom.domain;
 
+import hello.chatting.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,10 +17,10 @@ public class ChatRoomMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "room_id", nullable = false)
     private Long roomId;         // ChatRoom.id FK
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     private String userId;
 
     @Column
@@ -35,5 +36,13 @@ public class ChatRoomMember {
 
     @Column(insertable = false, updatable = false)
     private LocalDateTime joinedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id", insertable = false, updatable = false)
+    private ChatRoom chatRoom;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "loginId", insertable = false, updatable = false)
+    private User user;
 
 }

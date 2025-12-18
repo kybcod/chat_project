@@ -1,10 +1,12 @@
 package hello.chatting.chat.domain;
 
+import hello.chatting.chatroom.domain.ChatRoom;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
+@ToString
 @Getter
 @Builder(toBuilder = true)
 @AllArgsConstructor
@@ -17,7 +19,7 @@ public class ChatMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "room_id", nullable = false)
     private Long roomId;
 
     @Column(nullable = false)
@@ -31,4 +33,9 @@ public class ChatMessage {
 
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id", insertable = false, updatable = false)
+    private ChatRoom chatRoom;
+
 }

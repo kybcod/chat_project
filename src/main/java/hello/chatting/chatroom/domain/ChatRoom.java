@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder(toBuilder = true)
 @AllArgsConstructor
@@ -26,5 +28,9 @@ public class ChatRoom {
 
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY)
+    private List<ChatRoomMember> members = new ArrayList<>();
+
 
 }
