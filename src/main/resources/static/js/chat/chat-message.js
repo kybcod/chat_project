@@ -92,7 +92,7 @@ function renderEventMsg(message) {
 
 // 기본 TALK 타입
 function renderTextContent(message, contentDiv) {
-  contentDiv.text(message.message);
+  contentDiv.html(linkify(message.message));
 }
 
 // FILE 타입 일 때 렌더링
@@ -169,6 +169,13 @@ function handleFileUpload(event) {
 }
 
 
+// 링크 표시 url
+function linkify(text) {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, function(url) {
+    return `<a href="${url}" target="_blank" class="chat-link">${url}</a>`;
+  });
+}
 
 
 /**
