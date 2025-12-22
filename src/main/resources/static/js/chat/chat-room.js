@@ -197,6 +197,13 @@ function exitRoom(room){
 }
 
 /**
+ *  채팅방 초대하기
+ */
+function inviteToChat() {
+  console.log("채팅방 초대 클릭");
+}
+
+/**
  * 나가기/초대하기 메세지 전송
  */
 function exitAndInviteMessage(type, name, roomType) {

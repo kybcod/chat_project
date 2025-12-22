@@ -19,12 +19,33 @@
     </div>
 
     <div id="chat-input-area" class="chat-input-area" style="display:none;">
-        <input type="file" id="fileInput" style="display: none;" onchange="handleFileUpload(event)">
-        <label for="fileInput" class="file-upload-btn">
-            <img src="/images/plus.png" />
-        </label>
+        <!-- 숨겨진 파일 input -->
+        <input type="file" id="fileInput" style="display:none" onchange="handleFileUpload(event)">
+
+        <div class="dropdown" style="margin: auto;">
+            <!-- + 아이콘 버튼 -->
+            <button class="btn btn-light dropdown-toggle" type="button" id="chatMenuBtn" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #4e92ff;border-color: #4e92ff;color: #fff;">
+                <i class="bi bi-plus-lg"></i>
+            </button>
+
+            <!-- 드롭다운 메뉴 -->
+            <ul class="dropdown-menu" aria-labelledby="chatMenuBtn">
+                <li>
+                    <button class="dropdown-item" onclick="openFileSelect()">
+                        파일 선택
+                    </button>
+                </li>
+                <li>
+                    <button class="dropdown-item" onclick="inviteToChat()">
+                        채팅방 초대
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+
         <textarea id="messageInput" placeholder="메시지를 입력하세요" rows="1"></textarea>
-        <button onclick="sendMessage()">전송</button>
+        <button class="sendBtn" onclick="sendMessage()">전송</button>
     </div>
 </div>
 

@@ -133,6 +133,12 @@ function scrollToBottom() {
 
 
 // 파일 전송
+function openFileSelect() {
+  // 여기서는 파일 선택창만 열어줌
+  document.getElementById("fileInput").click();
+}
+
+
 function handleFileUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
